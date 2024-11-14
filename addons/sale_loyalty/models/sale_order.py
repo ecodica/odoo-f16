@@ -416,7 +416,7 @@ class SaleOrder(models.Model):
                 continue
             mapped_taxes = self.fiscal_position_id.map_tax(tax)
             tax_desc = ''
-            if any(t.name for t in mapped_taxes):
+            if len(discountable_per_tax) > 1 and any(t.name for t in mapped_taxes):
                 tax_desc = _(
                     ' - On product with the following taxes: %(taxes)s',
                     taxes=", ".join(mapped_taxes.mapped('name')),
@@ -450,7 +450,7 @@ class SaleOrder(models.Model):
         """
         self.ensure_one()
         return [('active', '=', True), ('sale_ok', '=', True),
-                ('company_id', 'in', (self.company_id.id, False)),
+                ('company_id', 'in', (self.company_id.id, self.company_id.parent_id.id, False)),
                 '|', ('date_to', '=', False), ('date_to', '>=', fields.Date.context_today(self))]
 
     def _get_trigger_domain(self):
@@ -459,7 +459,7 @@ class SaleOrder(models.Model):
         """
         self.ensure_one()
         return [('active', '=', True), ('program_id.sale_ok', '=', True),
-                ('company_id', 'in', (self.company_id.id, False)),
+                ('company_id', 'in', (self.company_id.id, self.company_id.parent_id.id, False)),
                 '|', ('program_id.date_to', '=', False), ('program_id.date_to', '>=', fields.Date.context_today(self))]
 
     def _get_applicable_program_points(self, domain=None):

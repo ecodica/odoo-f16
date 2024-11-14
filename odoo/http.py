@@ -439,6 +439,8 @@ class Stream:
     public = False
 
     def __init__(self, **kwargs):
+        # Remove class methods from the instances
+        self.from_path = self.from_attachment = self.from_binary_field = None
         self.__dict__.update(kwargs)
 
     @classmethod
@@ -1228,6 +1230,7 @@ class Request:
 
     def _post_init(self):
         self.session, self.db = self._get_session_and_dbname()
+        self._post_init = None
 
     def _get_session_and_dbname(self):
         sid = self.httprequest.cookies.get('session_id')

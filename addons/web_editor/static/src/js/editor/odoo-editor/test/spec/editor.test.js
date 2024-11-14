@@ -3991,6 +3991,111 @@ X[]
                     contentAfter: '<p><br></p><p>[]<br></p>',
                 });
             });
+            it('should delete all contents of an anchor td, then split the paragraph', async () => {
+                // Forward selection
+                await testEditor(BasicEditor, {
+                    contentBefore: unformat(
+                        `<table>
+                            <tbody>
+                                <tr>
+                                    <td><p>[abc</p><p>def</p></td>
+                                    <td><p>abcd</p></td>
+                                    <td><p>ab]</p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                </tr>
+                            </tbody>
+                        </table>`,
+                    ),
+                    stepFunction: async editor => {
+                        await triggerEvent(editor.editable, 'input', { data: 'Enter', inputType: 'insertParagraph' });
+                    },
+                    contentAfter: unformat(
+                        `<table>
+                            <tbody>
+                                <tr>
+                                    <td><p><br></p><p>[]<br></p></td>
+                                    <td><p>abcd</p></td>
+                                    <td><p>ab</p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                </tr>
+                            </tbody>
+                        </table>`,
+                    ),
+                });
+                // Backward selection
+                await testEditor(BasicEditor, {
+                    contentBefore: unformat(
+                        `<table>
+                            <tbody>
+                                <tr>
+                                    <td><p>]ab</p></td>
+                                    <td><p>abcd</p></td>
+                                    <td><p>abc</p><p>def[</p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                </tr>
+                            </tbody>
+                        </table>`,
+                    ),
+                    stepFunction: async editor => {
+                        await triggerEvent(editor.editable, 'input', { data: 'Enter', inputType: 'insertParagraph' });
+                    },
+                    contentAfter: unformat(
+                        `<table>
+                            <tbody>
+                                <tr>
+                                    <td><p>ab</p></td>
+                                    <td><p>abcd</p></td>
+                                    <td><p><br></p><p>[]<br></p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                </tr>
+                            </tbody>
+                        </table>`,
+                    ),
+                });
+            });
+            it('remove selected text and insert paragraph tag within a table cell and enter key is pressed', async () => {
+                await testEditor(BasicEditor, {
+                    contentBefore: unformat(
+                        `<table>
+                            <tbody>
+                                <tr>
+                                    <td><p>[Test</p><p>Test</p><p>Test]</p></td>
+                                    <td><p><br></p></td>
+                                </tr>
+                            </tbody>
+                        </table>`,
+                    ),
+                    stepFunction: async editor => {
+                        await triggerEvent(editor.editable, 'input', { data: 'Enter', inputType: 'insertParagraph' });
+                    },
+                    contentAfter: unformat(
+                        `<table>
+                            <tbody>
+                                <tr>
+                                    <td><p><br></p><p>[]<br></p></td>
+                                    <td><p><br></p></td>
+                                </tr>
+                            </tbody>
+                        </table>`,
+                    ),
+                });
+            });
         });
     });
 
@@ -4376,6 +4481,84 @@ X[]
                     contentAfter: '<p><br>[]<br></p>',
                 });
             });
+            it ('should delete all contents of anchor td, then insert a line break', async () => {
+                // Forward selection
+                await testEditor(BasicEditor, {
+                    contentBefore: unformat(
+                        `<table>
+                            <tbody>
+                                <tr>
+                                    <td><p>[abc</p><p>def</p></td>
+                                    <td><p>abcd</p></td>
+                                    <td><p>ab]</p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                </tr>
+                            </tbody>
+                        </table>`,
+                    ),
+                    stepFunction: async editor => {
+                        await triggerEvent(editor.editable, 'input', { data: 'Enter', inputType: 'insertLineBreak' });
+                    },
+                    contentAfter: unformat(
+                        `<table>
+                            <tbody>
+                                <tr>
+                                    <td><p><br>[]<br></p></td>
+                                    <td><p>abcd</p></td>
+                                    <td><p>ab</p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                </tr>
+                            </tbody>
+                        </table>`,
+                    ),
+                });
+                // Backward selection
+                await testEditor(BasicEditor, {
+                    contentBefore: unformat(
+                        `<table>
+                            <tbody>
+                                <tr>
+                                    <td><p>]ab</p></td>
+                                    <td><p>abcd</p></td>
+                                    <td><p>abc</p><p>def[</p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                </tr>
+                            </tbody>
+                        </table>`,
+                    ),
+                    stepFunction: async editor => {
+                        await triggerEvent(editor.editable, 'input', { data: 'Enter', inputType: 'insertLineBreak' });
+                    },
+                    contentAfter: unformat(
+                        `<table>
+                            <tbody>
+                                <tr>
+                                    <td><p>ab</p></td>
+                                    <td><p>abcd</p></td>
+                                    <td><p><br>[]<br></p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                    <td><p><br></p></td>
+                                </tr>
+                            </tbody>
+                        </table>`,
+                    ),
+                });
+            });
         });
     });
 
@@ -4749,7 +4932,7 @@ X[]
 
     describe('columnize', () => {
         const columnsContainer = contents => `<div class="container o_text_columns"><div class="row">${contents}</div></div>`;
-        const column = (size, contents) => `<div class="col-lg-${size}">${contents}</div>`;
+        const column = (size, contents) => `<div class="col-${size}">${contents}</div>`;
         describe('2 columns', () => {
             it('should do nothing', async () => {
                 await testEditor(BasicEditor, {
@@ -4991,10 +5174,10 @@ X[]
                     stepFunction: editor => editor.execCommand('columnize', 2),
                     contentAfter: '<div class="container"><div class="row"><div class="col">' +
                                       '<div class="o_text_columns"><div class="row">' + // no "container" class
-                                          '<div class="col-lg-6">' +
+                                          '<div class="col-6">' +
                                               '<p>ab[]cd</p>' +
                                           '</div>' +
-                                          '<div class="col-lg-6"><p><br></p></div>' +
+                                          '<div class="col-6"><p><br></p></div>' +
                                       '</div></div>' +
                                       '<p><br></p>' +
                                   '</div></div></div>',
@@ -5292,6 +5475,13 @@ X[]
                     contentBefore: '<table><tbody><tr style="height: 20px;"><td style="width: 20px;">ab</td><td>[cd]</td><td>ef</td></tr></tbody></table>',
                     stepFunction: async editor => triggerEvent(editor.editable, 'keydown', { key: 'Tab'}),
                     contentAfter: '<table><tbody><tr style="height: 20px;"><td style="width: 20px;">ab</td><td>cd</td><td>ef[]</td></tr></tbody></table>',
+                });
+            });
+            it('should move selection to the next cell', async () => {
+                await testEditor(BasicEditor, {
+                    contentBefore: '<ul><li><br><table><tbody><tr style="height: 20px;"><td style="width: 20px;">ab</td><td>[cd]</td><td>ef</td></tr></tbody></table><br></li></ul>',
+                    stepFunction: async editor => triggerEvent(editor.editable, 'keydown', { key: 'Tab'}),
+                    contentAfter: '<ul><li><br><table><tbody><tr style="height: 20px;"><td style="width: 20px;">ab</td><td>cd</td><td>ef[]</td></tr></tbody></table><br></li></ul>',
                 });
             });
         });
@@ -7151,6 +7341,28 @@ X[]
                         insertText(editor, '`');
                     },
                     contentAfter: '<p>ab<code class="o_inline_code">[]c</code></p>',
+                });
+            });
+            it('should not convert text into inline code when content is empty', async () => {
+                await testEditor(BasicEditor, {
+                    contentBefore: '<p>`[]</p>',
+                    stepFunction: async editor => insertText(editor, '`'),
+                    contentAfter: '<p>``[]</p>',
+                });
+                await testEditor(BasicEditor, {
+                    contentBefore: '<p>``[]</p>',
+                    stepFunction: async editor => insertText(editor, '`'),
+                    contentAfter: '<p>```[]</p>',
+                });
+                await testEditor(BasicEditor, {
+                    contentBefore: '<p>```[]</p>',
+                    stepFunction: async editor => insertText(editor, '`'),
+                    contentAfter: '<p>````[]</p>',
+                });
+                await testEditor(BasicEditor, {
+                    contentBefore: '<p>````[]</p>',
+                    stepFunction: async editor => insertText(editor, '`'),
+                    contentAfter: '<p>`````[]</p>',
                 });
             });
         });

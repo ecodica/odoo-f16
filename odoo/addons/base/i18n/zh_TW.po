@@ -812,7 +812,7 @@ msgstr ""
 #: model:ir.module.module,description:base.module_l10n_tr_reports
 msgid ""
 "\n"
-"        Accounting reports for Turkey\n"
+"        Accounting reports for Türkiye\n"
 "    "
 msgstr ""
 
@@ -4940,10 +4940,10 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Dieses  Modul beinhaltet einen deutschen Kontenrahmen basierend auf dem SKR03.\n"
+"此模組包含基於 SKR03 的德國會計賬目總表。\n"
 "==============================================================================\n"
 "\n"
-"German accounting chart and localization.\n"
+"德國會計賬目總表及本地化。\n"
 "    "
 
 #. module: base
@@ -4957,11 +4957,11 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-" 該模組包含基於 SKR04 的德國會計科目表.\n"
+"此模組包含基於 SKR04 的德國會計賬目總表。\n"
 "==============================================================================\n"
 "\n"
-" 德國會計客戶表及本地化.\n"
-" "
+"德國會計賬目總表及本地化。\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_event_booth
@@ -8038,6 +8038,35 @@ msgid ""
 "    https://www.sii.cl/factura_electronica/factura_mercado/Instructivo_Emision_Boleta_Elect.pdf\n"
 "    "
 msgstr ""
+"\n"
+"Purpose of the Module:\n"
+"======================\n"
+"\n"
+"As part of the SII requirements (Legal requirement in Chile), \n"
+"beginning on March 2021 boletas transactions must be sent to the SII under the \n"
+"electronic workflow using a different web service than the one used for electronic Invoices. \n"
+"Previously, there was no need to send the boletas to the SII, just a daily report.\n"
+"\n"
+"The requirement to send a daily sales book \n"
+"\"Libro de ventas diarias\" (former \"reporte de consumo de folios\" or RCOF) has been eliminated by the authority, \n"
+"effective August 1st 2022. For that reason it has been eliminated from this new version of Odoo.\n"
+"\n"
+"Differences between Electronic boletas vs Electronic Invoicing Workflows:\n"
+"=========================================================================\n"
+"\n"
+"These workflows have some important differences that lead us to do this PR with the specific changes.\n"
+"Here are the differences:\n"
+"\n"
+"* The mechanism for sending the electronic boletas information needs dedicated servers, different from those used at the reception electronic invoice (\"Palena\" for the production environment - palena.sii.cl and \"Maullin\" for the test environment - maullin.sii.cl).\n"
+"* The authentication services, querying the status of a delivery and the status of a document will be different.\n"
+"* The authentication token obtained\n"
+"* The XML schema for sending the electronic boletas was updated with the incorporation of new tags\n"
+"* The validation diagnosis of electronic boletas will be delivered through a \"REST\" web service that has as an input the track-id of the delivery. Electronic Invoices will continue to receive their diagnoses via e-mail.\n"
+"* The track-id (\"identificador de envío\") associated with the electronic boletas will be 15 digits long. (Electronics Invoice is 10)\n"
+"\n"
+"Highlights from this SII Guide:\n"
+"    https://www.sii.cl/factura_electronica/factura_mercado/Instructivo_Emision_Boleta_Elect.pdf\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_quality
@@ -18941,7 +18970,7 @@ msgstr "啟用分析一段時間"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_base_enable_profiling_wizard__expiration
 msgid "Enable profiling until"
-msgstr "啟用分析直到"
+msgstr "啟用分析直至"
 
 #. module: base
 #: model:ir.module.module,description:base.module_appointment_sms
@@ -20178,7 +20207,7 @@ msgstr "Folio 27 210 x 330 公厘"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_company__font
 msgid "Font"
-msgstr "字體"
+msgstr "字型"
 
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_I
@@ -22302,12 +22331,12 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_pos_six
 msgid "Integrate your POS with a Six payment terminal"
-msgstr "將您的 POS 與 Six 支付終端整合"
+msgstr "將 Six 付款終端機，整合至你的 POS 銷售點"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_pos_iot_six
 msgid "Integrate your POS with a Six payment terminal through IoT"
-msgstr "通過物聯網將您的 POS 機與六款支付終端整合在一起"
+msgstr "使用 IoT 物聯網盒子，將 Six 付款終端機，整合至你的 POS 銷售點"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_pos_stripe
@@ -25119,7 +25148,7 @@ msgstr "月"
 #: model:ir.model.fields.selection,name:base.selection__res_company__font__montserrat
 #: model:res.country,name:base.ms
 msgid "Montserrat"
-msgstr "蒙特塞拉特"
+msgstr "Montserrat"
 
 #. module: base
 #: model:res.country,name:base.ma
@@ -27756,6 +27785,14 @@ msgid "Odoo is unable to merge the generated PDFs."
 msgstr "Odoo 無法合併生成的 PDF。"
 
 #. module: base
+#. odoo-python
+#: code:addons/base/models/ir_actions_report.py:0
+msgid ""
+"Odoo is unable to merge the generated PDFs because of {num_errors} corrupted"
+" file(s)"
+msgstr "由於有 {num_errors} 個檔案損壞，Odoo 未能合併產生的 PDF"
+
+#. module: base
 #: model:ir.model.fields,help:base.field_ir_sequence__padding
 msgid ""
 "Odoo will automatically adds some '0' on the left of the 'Next Number' to "
@@ -28585,7 +28622,7 @@ msgstr "手機POS條碼掃描"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_pos_iot_six
 msgid "POS IoT Six"
-msgstr "POS IoT(物聯網) 六"
+msgstr "POS 銷售點 IoT 物聯網 Six"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_pos_restaurant_adyen
@@ -28600,7 +28637,7 @@ msgstr "POS 餐廳 Stripe"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_pos_six
 msgid "POS Six"
-msgstr "POS Six"
+msgstr "POS 銷售點 Six"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_pos_stripe
@@ -32310,7 +32347,7 @@ msgstr "技能管理"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_skills_slides
 msgid "Skills e-learning"
-msgstr "技能 e-learning"
+msgstr "技能網上學習"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_config_installer
@@ -32680,7 +32717,7 @@ msgstr "試算表CRM模板"
 #: model:ir.module.module,description:base.module_spreadsheet_dashboard_edition
 #: model:ir.module.module,summary:base.module_spreadsheet_dashboard_edition
 msgid "Spreadsheet Dashboard edition"
-msgstr "試算表概覽畫面版本"
+msgstr "試算表Dashboard版本"
 
 #. module: base
 #: model:ir.module.module,description:base.module_spreadsheet_dashboard_documents
@@ -32692,38 +32729,38 @@ msgstr "試算表文件"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard
 msgid "Spreadsheet dashboard"
-msgstr "試算表概覽畫面"
+msgstr "試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_edition
 msgid "Spreadsheet dashboard edition"
-msgstr "試算表概覽畫面版本"
+msgstr "試算表Dashboard版本"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_crm
 msgid "Spreadsheet dashboard for CRM"
-msgstr "CRM 試算表概覽畫面"
+msgstr "CRM 試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_account
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_account_accountant
 msgid "Spreadsheet dashboard for accounting"
-msgstr "會計試算表概覽畫面"
+msgstr "會計試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_website_sale_slides
 msgid "Spreadsheet dashboard for eLearning"
-msgstr "電子學習試算表概覽畫面"
+msgstr "電子學習試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_event_sale
 msgid "Spreadsheet dashboard for events"
-msgstr "活動試算表概覽畫面"
+msgstr "活動試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_hr_expense
 msgid "Spreadsheet dashboard for expenses"
-msgstr "開支試算表概覽畫面"
+msgstr "開支試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_sale_expense
@@ -32733,60 +32770,60 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_helpdesk
 msgid "Spreadsheet dashboard for helpdesk"
-msgstr "支援中心試算表概覽畫面"
+msgstr "支援中心試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_hr_contract
 msgid "Spreadsheet dashboard for human resources"
-msgstr "人力資源試算表概覽畫面"
+msgstr "人力資源試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_im_livechat
 msgid "Spreadsheet dashboard for live chat"
-msgstr "即時聊天試算表概覽畫面"
+msgstr "即時聊天試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_mrp_account
 msgid "Spreadsheet dashboard for manufacturing"
-msgstr "製造試算表概覽畫面"
+msgstr "製造試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_pos_hr
 msgid "Spreadsheet dashboard for point of sale"
-msgstr "銷售點試算表概覽畫面"
+msgstr "銷售點試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_purchase
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_purchase_stock
 msgid "Spreadsheet dashboard for purchases"
-msgstr "採購試算表概覽畫面"
+msgstr "採購試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_hr_referral
 msgid "Spreadsheet dashboard for recruitment"
-msgstr "招聘試算表概覽畫面"
+msgstr "招聘試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_sale_renting
 msgid "Spreadsheet dashboard for rental"
-msgstr "租賃試算表概覽畫面"
+msgstr "租賃試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_sale
 msgid "Spreadsheet dashboard for sales"
-msgstr "銷售試算表概覽畫面"
+msgstr "銷售試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_stock
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_stock_account
 msgid "Spreadsheet dashboard for stock"
-msgstr "庫存試算表概覽畫面"
+msgstr "庫存試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_hr_timesheet
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_sale_timesheet
 msgid "Spreadsheet dashboard for time sheets"
-msgstr "工時表試算表概覽畫面"
+msgstr "工時表試算表Dashboard"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_in_reports_gstr_spreadsheet
@@ -33590,6 +33627,15 @@ msgstr "不能將\"%s\"操作選為原點操作。"
 #, python-format
 msgid "The \"App Switcher\" action cannot be selected as home action."
 msgstr "「應用程式切換」操作無法選擇為主動作."
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_users.py:0
+#, python-format
+msgid ""
+"The action \"%s\" cannot be set as the home action because it requires a "
+"record to be selected beforehand."
+msgstr "「%s」不可設為主頁動作，因為它需要事先選取一項記錄。"
 
 #. module: base
 #: model:ir.model.fields,help:base.field_res_country__code
@@ -35179,18 +35225,18 @@ msgstr "突尼斯"
 
 #. module: base
 #: model:res.country,name:base.tr
-msgid "Turkey"
+msgid "Türkiye"
 msgstr "土耳其"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_tr
-msgid "Turkey - Accounting"
-msgstr "Turkey - Accounting"
+msgid "Türkiye - Accounting"
+msgstr "土耳其 - 會計"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_tr_reports
-msgid "Turkey - Accounting Reports"
-msgstr "Turkey - Accounting Reports"
+msgid "Türkiye - Accounting Reports"
+msgstr "土耳其 - 會計報表"
 
 #. module: base
 #: model:res.country,name:base.tm
@@ -35994,7 +36040,7 @@ msgstr "使用者: %s"
 #: model:ir.model.fields,field_description:base.field_ir_mail_server__smtp_user
 #: model:ir.model.fields.selection,name:base.selection__ir_mail_server__smtp_authentication__login
 msgid "Username"
-msgstr "使用者名"
+msgstr "使用者名稱"
 
 #. module: base
 #. odoo-python
@@ -36301,6 +36347,12 @@ msgstr "檢視潛在客戶的即時聊天作業階段"
 
 #. module: base
 #. odoo-python
+#: code:addons/base/models/ir_actions_report.py:0
+msgid "View Problematic Record(s)"
+msgstr "檢視有問題記錄"
+
+#. module: base
+#. odoo-python
 #: code:addons/base/models/ir_model.py:0
 #, python-format
 msgid "View: %s"
@@ -36527,7 +36579,7 @@ msgstr "網站 - 付款授權"
 #: model:ir.module.module,shortdesc:base.module_website_payment_paypal
 #: model:ir.module.module,summary:base.module_website_payment_paypal
 msgid "Website - Payment Paypal"
-msgstr ""
+msgstr "網站 - PayPal 付款"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_appointment_crm

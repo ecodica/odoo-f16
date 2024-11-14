@@ -7,13 +7,14 @@
 # 深圳 JM <3440895@qq.com>, 2022
 # Ryan <ouyang.em@gmail.com>, 2023
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023
-# Raymond Yu <cl_yu@hotmail.com>, 2024
 # Benson <Benson.Dr@Gmail.com>, 2024
 # Emily Jia <eji@odoo.com>, 2024
 # Martin Trigaux, 2024
 # Wil Odoo, 2024
 # 湘子 南 <1360857908@qq.com>, 2024
 # Jeffery CHEN <jeffery9@gmail.com>, 2024
+# Odoo哥 <vnsoft.he@gmail.com>, 2024
+# Raymond Yu <cl_yu@hotmail.com>, 2024
 # Chloe Wang, 2024
 # 
 msgid ""
@@ -846,12 +847,9 @@ msgstr ""
 #: model:ir.module.module,description:base.module_l10n_tr_reports
 msgid ""
 "\n"
-"        Accounting reports for Turkey\n"
+"        Accounting reports for Türkiye\n"
 "    "
 msgstr ""
-"\n"
-"        Accounting reports for Turkey\n"
-"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_uk_reports
@@ -28192,6 +28190,14 @@ msgid "Odoo is unable to merge the generated PDFs."
 msgstr "Odoo无法合并创建的PDF。"
 
 #. module: base
+#. odoo-python
+#: code:addons/base/models/ir_actions_report.py:0
+msgid ""
+"Odoo is unable to merge the generated PDFs because of {num_errors} corrupted"
+" file(s)"
+msgstr "由于有 {num_errors} 个文件损坏，Odoo 不能合并生成 PDF"
+
+#. module: base
 #: model:ir.model.fields,help:base.field_ir_sequence__padding
 msgid ""
 "Odoo will automatically adds some '0' on the left of the 'Next Number' to "
@@ -31929,7 +31935,7 @@ msgstr "沙特阿拉伯 - 电子发票"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_sa_edi_pos
 msgid "Saudi Arabia - E-invoicing (Simplified)"
-msgstr ""
+msgstr "沙特阿拉伯 - 电子发票 (简化版)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_sa_pos
@@ -34029,6 +34035,15 @@ msgid "The \"App Switcher\" action cannot be selected as home action."
 msgstr "「应用程序切换」动作不能选择为主动作."
 
 #. module: base
+#. odoo-python
+#: code:addons/base/models/res_users.py:0
+#, python-format
+msgid ""
+"The action \"%s\" cannot be set as the home action because it requires a "
+"record to be selected beforehand."
+msgstr "“%s” 不可设为主页动作，因为它需要事先选取一项记录。"
+
+#. module: base
 #: model:ir.model.fields,help:base.field_res_country__code
 #: model:ir.model.fields,help:base.field_res_partner__country_code
 #: model:ir.model.fields,help:base.field_res_users__country_code
@@ -35624,18 +35639,18 @@ msgstr "突尼斯"
 
 #. module: base
 #: model:res.country,name:base.tr
-msgid "Turkey"
+msgid "Türkiye"
 msgstr "土耳其"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_tr
-msgid "Turkey - Accounting"
-msgstr "Turkey - Accounting"
+msgid "Türkiye - Accounting"
+msgstr "土耳其 - 会计"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_tr_reports
-msgid "Turkey - Accounting Reports"
-msgstr "Turkey - Accounting Reports"
+msgid "Türkiye - Accounting Reports"
+msgstr "土耳其 - 财务报告"
 
 #. module: base
 #: model:res.country,name:base.tm
@@ -36743,6 +36758,12 @@ msgstr "视图继承模式"
 #: model:ir.module.module,summary:base.module_website_crm_livechat
 msgid "View livechat sessions for leads"
 msgstr "视图潜在客户的即时聊天作业阶段"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_actions_report.py:0
+msgid "View Problematic Record(s)"
+msgstr "查看有问题的记录"
 
 #. module: base
 #. odoo-python

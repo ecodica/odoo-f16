@@ -2273,6 +2273,12 @@
     }
 
     let currentNode = null;
+    function saveCurrent() {
+        let n = currentNode;
+        return () => {
+            currentNode = n;
+        };
+    }
     function getCurrent() {
         if (!currentNode) {
             throw new OwlError("No active component (a hook function should only be called in 'setup')");
@@ -2601,42 +2607,47 @@
     }
 
     const TIMEOUT = Symbol("timeout");
+    const HOOK_TIMEOUT = {
+        onWillStart: 3000,
+        onWillUpdateProps: 3000,
+    };
     function wrapError(fn, hookName) {
-        const error = new OwlError(`The following error occurred in ${hookName}: `);
-        const timeoutError = new OwlError(`${hookName}'s promise hasn't resolved after 3 seconds`);
+        const error = new OwlError();
+        const timeoutError = new OwlError();
         const node = getCurrent();
         return (...args) => {
             const onError = (cause) => {
                 error.cause = cause;
-                if (cause instanceof Error) {
-                    error.message += `"${cause.message}"`;
-                }
-                else {
-                    error.message = `Something that is not an Error was thrown in ${hookName} (see this Error's "cause" property)`;
-                }
+                error.message =
+                    cause instanceof Error
+                        ? `The following error occurred in ${hookName}: "${cause.message}"`
+                        : `Something that is not an Error was thrown in ${hookName} (see this Error's "cause" property)`;
                 throw error;
             };
+            let result;
             try {
-                const result = fn(...args);
-                if (result instanceof Promise) {
-                    if (hookName === "onWillStart" || hookName === "onWillUpdateProps") {
-                        const fiber = node.fiber;
-                        Promise.race([
-                            result.catch(() => { }),
-                            new Promise((resolve) => setTimeout(() => resolve(TIMEOUT), 3000)),
-                        ]).then((res) => {
-                            if (res === TIMEOUT && node.fiber === fiber && node.status <= 2) {
-                                console.log(timeoutError);
-                            }
-                        });
-                    }
-                    return result.catch(onError);
-                }
-                return result;
+                result = fn(...args);
             }
             catch (cause) {
                 onError(cause);
             }
+            if (!(result instanceof Promise)) {
+                return result;
+            }
+            const timeout = HOOK_TIMEOUT[hookName];
+            if (timeout) {
+                const fiber = node.fiber;
+                Promise.race([
+                    result.catch(() => { }),
+                    new Promise((resolve) => setTimeout(() => resolve(TIMEOUT), timeout)),
+                ]).then((res) => {
+                    if (res === TIMEOUT && node.fiber === fiber && node.status <= 2) {
+                        timeoutError.message = `${hookName}'s promise hasn't resolved after ${timeout / 1000} seconds`;
+                        console.log(timeoutError);
+                    }
+                });
+            }
+            return result.catch(onError);
         };
     }
     // -----------------------------------------------------------------------------
@@ -3189,7 +3200,7 @@
                         if (line[columnIndex]) {
                             msg +=
                                 `\nThe error might be located at xml line ${lineNumber} column ${columnIndex}\n` +
-                                    `${line}\n${"-".repeat(columnIndex - 1)}^`;
+                                `${line}\n${"-".repeat(columnIndex - 1)}^`;
                         }
                     }
                 }
@@ -3323,9 +3334,9 @@
      * only expressive enough to understand the shape of objects, of arrays, and
      * various operators.
      */
-    //------------------------------------------------------------------------------
-    // Misc types, constants and helpers
-    //------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------
+        // Misc types, constants and helpers
+        //------------------------------------------------------------------------------
     const RESERVED_WORDS = "true,false,NaN,null,undefined,debugger,console,window,in,instanceof,new,function,return,eval,void,Math,RegExp,Array,Object,Date".split(",");
     const WORD_REPLACEMENT = Object.assign(Object.create(null), {
         and: "&&",
@@ -3935,16 +3946,16 @@
             const mapping = new Map();
             return tokens
                 .map((tok) => {
-                if (tok.varName && !tok.isLocal) {
-                    if (!mapping.has(tok.varName)) {
-                        const varId = generateId("v");
-                        mapping.set(tok.varName, varId);
-                        this.define(varId, tok.value);
+                    if (tok.varName && !tok.isLocal) {
+                        if (!mapping.has(tok.varName)) {
+                            const varId = generateId("v");
+                            mapping.set(tok.varName, varId);
+                            this.define(varId, tok.value);
+                        }
+                        tok.value = mapping.get(tok.varName);
                     }
-                    tok.value = mapping.get(tok.varName);
-                }
-                return tok.value;
-            })
+                    return tok.value;
+                })
                 .join("");
         }
         translate(str) {
@@ -4051,11 +4062,11 @@
                 .split(".")
                 .slice(1)
                 .map((m) => {
-                if (!MODS.has(m)) {
-                    throw new OwlError(`Unknown event modifier: '${m}'`);
-                }
-                return `"${m}"`;
-            });
+                    if (!MODS.has(m)) {
+                        throw new OwlError(`Unknown event modifier: '${m}'`);
+                    }
+                    return `"${m}"`;
+                });
             let modifiersCode = "";
             if (modifiers.length) {
                 modifiersCode = `${modifiers.join(",")}, `;
@@ -5555,7 +5566,7 @@
     }
 
     // do not modify manually. This file is generated by the release script.
-    const version = "2.3.1";
+    const version = "2.4.1";
 
     // -----------------------------------------------------------------------------
     //  Scheduler
@@ -5566,6 +5577,7 @@
             this.frame = 0;
             this.delayedRenders = [];
             this.cancelledNodes = new Set();
+            this.processing = false;
             this.requestAnimationFrame = Scheduler.requestAnimationFrame;
         }
         addFiber(fiber) {
@@ -5596,6 +5608,10 @@
             }
         }
         processTasks() {
+            if (this.processing) {
+                return;
+            }
+            this.processing = true;
             this.frame = 0;
             for (let node of this.cancelledNodes) {
                 node._destroy();
@@ -5609,6 +5625,7 @@
                     this.tasks.delete(task);
                 }
             }
+            this.processing = false;
         }
         processFiber(fiber) {
             if (fiber.root !== fiber) {
@@ -5650,6 +5667,7 @@ See https://github.com/odoo/owl/blob/${hash}/doc/reference/app.md#configuration 
         constructor(Root, config = {}) {
             super(config);
             this.scheduler = new Scheduler();
+            this.subRoots = new Set();
             this.root = null;
             this.name = config.name || "";
             this.Root = Root;
@@ -5668,14 +5686,44 @@ See https://github.com/odoo/owl/blob/${hash}/doc/reference/app.md#configuration 
             this.props = config.props || {};
         }
         mount(target, options) {
-            App.validateTarget(target);
-            if (this.dev) {
-                validateProps(this.Root, this.props, { __owl__: { app: this } });
+            const root = this.createRoot(this.Root, { props: this.props });
+            this.root = root.node;
+            this.subRoots.delete(root.node);
+            return root.mount(target, options);
+        }
+        createRoot(Root, config = {}) {
+            const props = config.props || {};
+            // hack to make sure the sub root get the sub env if necessary. for owl 3,
+            // would be nice to rethink the initialization process to make sure that
+            // we can create a ComponentNode and give it explicitely the env, instead
+            // of looking it up in the app
+            const env = this.env;
+            if (config.env) {
+                this.env = config.env;
             }
-            const node = this.makeNode(this.Root, this.props);
-            const prom = this.mountNode(node, target, options);
-            this.root = node;
-            return prom;
+            const restore = saveCurrent();
+            const node = this.makeNode(Root, props);
+            restore();
+            if (config.env) {
+                this.env = env;
+            }
+            this.subRoots.add(node);
+            return {
+                node,
+                mount: (target, options) => {
+                    App.validateTarget(target);
+                    if (this.dev) {
+                        validateProps(Root, props, { __owl__: { app: this } });
+                    }
+                    const prom = this.mountNode(node, target, options);
+                    return prom;
+                },
+                destroy: () => {
+                    this.subRoots.delete(node);
+                    node.destroy();
+                    this.scheduler.processTasks();
+                },
+            };
         }
         makeNode(Component, props) {
             return new ComponentNode(Component, props, this, null, null);
@@ -5707,6 +5755,9 @@ See https://github.com/odoo/owl/blob/${hash}/doc/reference/app.md#configuration 
         }
         destroy() {
             if (this.root) {
+                for (let subroot of this.subRoots) {
+                    subroot.destroy();
+                }
                 this.root.destroy();
                 this.scheduler.processTasks();
             }
@@ -6021,8 +6072,8 @@ See https://github.com/odoo/owl/blob/${hash}/doc/reference/app.md#configuration 
     Object.defineProperty(exports, '__esModule', { value: true });
 
 
-    __info__.date = '2024-08-14T14:25:23.038Z';
-    __info__.hash = '9c2d957';
+    __info__.date = '2024-10-31T09:42:30.824Z';
+    __info__.hash = 'b8d09e5';
     __info__.url = 'https://github.com/odoo/owl';
 
 

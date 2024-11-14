@@ -22,6 +22,7 @@
 # Arunas V. <arunas@devoro.com>, 2023
 # Linas Versada <linaskrisiukenas@gmail.com>, 2023
 # Aurelija Vitkauskiene, 2023
+# Gailius Kazlauskas <gailius@vialaurea.lt>, 2024
 # Greta Šeštokė, 2024
 # 
 msgid ""
@@ -1120,7 +1121,7 @@ msgstr "Portretas"
 #: model:ir.model.fields,field_description:project.field_project_task__rating_avg
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__rating_avg
 msgid "Average Rating"
-msgstr ""
+msgstr "Vidutinis įvertinimas"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__rating_avg_percentage
@@ -3577,7 +3578,7 @@ msgstr "Klaidų kiekis"
 #: model:ir.model.fields,help:project.field_project_task__message_needaction_counter
 #: model:ir.model.fields,help:project.field_project_update__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Pranešimų, kuriems reikia imtis veiksmų, skaičius"
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_milestone__message_has_error_counter
@@ -4510,7 +4511,7 @@ msgstr "Tyrimas"
 #: model:account.analytic.account,name:project.analytic_research_development
 #: model:project.project,name:project.project_project_2
 msgid "Research & Development"
-msgstr ""
+msgstr "Tyrimai ir plėtra"
 
 #. module: project
 #. odoo-javascript

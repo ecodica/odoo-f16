@@ -9971,6 +9971,9 @@
             }
         }
         setColorScaleColor(target, color) {
+            if (!isColorValid(color)) {
+                return;
+            }
             const point = this.state.rules.colorScale[target];
             if (point) {
                 point.color = Number.parseInt(color.substr(1), 16);
@@ -18635,7 +18638,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     return { type: "FUNCALL", value: current.value, args };
                 }
             case "INVALID_REFERENCE":
-                throw new InvalidReferenceError();
+                return {
+                    type: "REFERENCE",
+                    value: CellErrorType.InvalidReference,
+                };
             case "REFERENCE":
                 if (((_b = tokens[0]) === null || _b === void 0 ? void 0 : _b.value) === ":" && ((_c = tokens[1]) === null || _c === void 0 ? void 0 : _c.type) === "REFERENCE") {
                     tokens.shift();
@@ -33951,11 +33957,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     }
                     if (cell &&
                         this.currentSearchRegex &&
-                        this.currentSearchRegex.test(this.searchOptions.searchFormulas
-                            ? cell.isFormula()
-                                ? cell.content
-                                : String(cell.evaluated.value)
-                            : String(cell.evaluated.value))) {
+                        this.currentSearchRegex.test(this.searchOptions.searchFormulas ? cell.content : String(cell.evaluated.value))) {
                         const position = this.getters.getCellPosition(cell.id);
                         const match = { col: position.col, row: position.row, selected: false };
                         matches.push(match);
@@ -35109,6 +35111,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     this.selectedFigureId = null;
                     break;
             }
+        }
+        finalize() {
             /** Any change to the selection has to be  reflected in the selection processor. */
             this.selection.resetDefaultAnchor(this, deepCopy(this.gridSelection.anchor));
         }
@@ -36591,6 +36595,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case "REMOTE_REVISION":
                 case "REVISION_REDONE":
                 case "REVISION_UNDONE":
+                case "SNAPSHOT_CREATED":
                     return this.processedRevisions.has(message.nextRevisionId);
                 default:
                     return false;
@@ -37108,7 +37113,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         handle(cmd) {
             var _a;
-            this.cleanViewports();
             switch (cmd.type) {
                 case "START":
                     this.selection.observe(this, {
@@ -37152,6 +37156,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     if ("content" in cmd || "format" in cmd || ((_a = cmd.style) === null || _a === void 0 ? void 0 : _a.fontSize) !== undefined) {
                         this.sheetsWithDirtyViewports.add(cmd.sheetId);
                     }
+                    break;
+                case "DELETE_SHEET":
+                    this.cleanViewports();
                     break;
                 case "ACTIVATE_SHEET":
                     this.setViewports();
@@ -37469,6 +37476,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
         }
         resetSheetViews() {
+            this.cleanViewports();
             for (let sheetId of Object.keys(this.viewports)) {
                 const position = this.getters.getSheetPosition(sheetId);
                 this.resetViewports(sheetId);
@@ -41854,30 +41862,28 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         const isExported = tokens
             .filter((tk) => tk.type === "FUNCTION")
             .every((tk) => functions[tk.value.toUpperCase()].isExported);
+        const type = getCellType(cell.value);
+        const exportedValue = adaptFormulaValueToExcel(cell.value);
         if (isExported) {
-            let cycle = escapeXml ``;
             const XlsxFormula = adaptFormulaToExcel(formula);
-            // hack for cycles : if we don't set a value (be it 0 or #VALUE!), it will appear as invisible on excel,
-            // Making it very hard for the client to find where the recursion is.
-            if (cell.value === CellErrorType.CircularDependency) {
-                attrs.push(["t", "str"]);
-                cycle = escapeXml /*xml*/ `<v>${cell.value}</v>`;
-            }
-            node = escapeXml /*xml*/ `<f> ${XlsxFormula} </f> ${cycle}`;
+            node = escapeXml /*xml*/ `
+      <f>
+        ${XlsxFormula}
+      </f>
+      ${escapeXml /*xml*/ `<v>${exportedValue}</v>`}
+    `;
+            attrs.push(["t", type]);
             return { attrs, node };
         }
         else {
-            // Shouldn't we always output the value then ?
-            const value = cell.value;
             // If the cell contains a non-exported formula and that is evaluates to
             // nothing* ,we don't export it.
             // * non-falsy value are relevant and so are 0 and FALSE, which only leaves
             // the empty string.
-            if (value === "")
+            if (exportedValue === "")
                 return undefined;
-            const type = getCellType(value);
             attrs.push(["t", type]);
-            node = escapeXml /*xml*/ `<v>${value}</v>`;
+            node = escapeXml /*xml*/ `<v>${exportedValue}</v>`;
             return { attrs, node };
         }
     }
@@ -41912,7 +41918,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             ast = addMissingRequiredArgs(ast);
             return ast;
         });
+        ast = convertAstNodes(ast, "REFERENCE", (ast) => {
+            return ast.value === CellErrorType.InvalidReference ? { ...ast, value: "#REF!" } : ast;
+        });
         return ast ? astToFormula(ast) : formulaText;
+    }
+    function adaptFormulaValueToExcel(formulaValue) {
+        return formulaValue === CellErrorType.InvalidReference ? "#REF!" : formulaValue;
     }
     /**
      * Some Excel function need required args that might not be mandatory in o-spreadsheet.
@@ -43101,6 +43113,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.selection.observe(this, {
                 handleEvent: () => this.trigger("update"),
             });
+            // move in "Loading" mode where we ignore redundant calls to finalize triggered by the
+            // replay of stateUpdateMessages in the session
+            this.isLoading = true;
             // This should be done after construction of LocalHistory due to order of
             // events
             this.setupSessionEvents();
@@ -43113,6 +43128,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             // mark all models as "raw", so they will not be turned into reactive objects
             // by owl, since we do not rely on reactivity
             owl.markRaw(this);
+            this.isLoading = false;
+            // ensure propre recomputation of plugin states after the message replays
+            this.finalize();
         }
         joinSession() {
             this.session.join(this.config.client);
@@ -43222,6 +43240,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return DispatchResult.Success;
         }
         finalize() {
+            if (this.isLoading) {
+                return;
+            }
             this.status = 3 /* Status.Finalizing */;
             for (const h of this.handlers) {
                 h.finalize();
@@ -43440,9 +43461,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     Object.defineProperty(exports, '__esModule', { value: true });
 
 
-    __info__.version = '16.0.51';
-    __info__.date = '2024-08-19T08:14:53.311Z';
-    __info__.hash = '2b60022';
+    __info__.version = '16.0.55';
+    __info__.date = '2024-11-13T15:37:39.251Z';
+    __info__.hash = '6984990';
 
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);

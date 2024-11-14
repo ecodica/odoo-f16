@@ -83,7 +83,7 @@ msgstr "1 電話"
 #: model_terms:hr.job,website_description:hr.job_marketing
 #: model_terms:hr.job,website_description:hr.job_trainee
 msgid "12 days / year, including <br>6 of your choice."
-msgstr "12 天/年，包括<br>6 任你選擇。"
+msgstr "每年 12 天，包括 <br>6 天由你選擇。"
 
 #. module: hr
 #: model_terms:hr.job,job_details:hr.job_ceo
@@ -493,12 +493,12 @@ msgstr "管理員"
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_res_config_settings__module_hr_presence
 msgid "Advanced Presence Control"
-msgstr "高級狀態控制"
+msgstr "進階出勤管理"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "Advanced presence of employees"
-msgstr "員工的高級存在"
+msgstr "進階管理員工出勤"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_mail_alias__alias_contact
@@ -582,7 +582,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr.field_hr_employee__message_attachment_count
 #: model:ir.model.fields,field_description:hr.field_hr_job__message_attachment_count
 msgid "Attachment Count"
-msgstr "附件數"
+msgstr "附件數目"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_users_view_form_profile
@@ -618,7 +618,7 @@ msgstr "自動將這些部門的成員訂閱到道。"
 #: model_terms:hr.job,website_description:hr.job_marketing
 #: model_terms:hr.job,website_description:hr.job_trainee
 msgid "Autonomy"
-msgstr "當責"
+msgstr "自主"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_users_view_form_profile
@@ -750,12 +750,12 @@ msgstr "聊天"
 #. module: hr
 #: model:hr.job,name:hr.job_ceo
 msgid "Chief Executive Officer"
-msgstr "首席執行官"
+msgstr "行政總裁"
 
 #. module: hr
 #: model:hr.job,name:hr.job_cto
 msgid "Chief Technical Officer"
-msgstr "首席技術官"
+msgstr "技術總監"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_department__child_ids
@@ -1596,7 +1596,7 @@ msgstr "小時圖示顯示"
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__hr_presence_state
 #: model:ir.model.fields,field_description:hr.field_res_users__hr_presence_state
 msgid "Hr Presence State"
-msgstr "Hr 出席狀態"
+msgstr "人力資源出勤狀態"
 
 #. module: hr
 #: model:ir.ui.menu,name:hr.menu_hr_main
@@ -1863,7 +1863,7 @@ msgstr "逾期活動"
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_form
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_tree
 msgid "Launch Plan"
-msgstr "啟動計畫"
+msgstr "開展計劃"
 
 #. module: hr
 #. odoo-python
@@ -2123,7 +2123,7 @@ msgstr "活動 %s 沒有指定特定用戶。"
 #: model_terms:hr.job,website_description:hr.job_trainee
 msgid ""
 "No waste of time in enterprise processes, real responsibilities and autonomy"
-msgstr "在企業流程中聰明工作，真正的自主與當責"
+msgstr "無謂在企業流程上浪費時間，肩負真正責任及自主權"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_users_view_form_profile
@@ -2394,7 +2394,7 @@ msgstr "規劃嚮導"
 #. module: hr
 #: model:ir.model,name:hr.model_hr_plan_activity_type
 msgid "Plan activity type"
-msgstr "計畫活動類型"
+msgstr "計劃活動類型"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_plan_view_form
@@ -3104,7 +3104,7 @@ msgstr "見習"
 #: model_terms:hr.job,website_description:hr.job_marketing
 #: model_terms:hr.job,website_description:hr.job_trainee
 msgid "Trainings"
-msgstr "培訓計畫"
+msgstr "培訓"
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__activity_exception_decoration
@@ -3374,7 +3374,7 @@ msgstr "你沒有權限存取此文件。"
 #: code:addons/hr/models/res_config_settings.py:0
 #, python-format
 msgid "You should select at least one Advanced Presence Control option."
-msgstr "您應該至少選擇一個 Advanced Presence Control 選項。"
+msgstr "你應至少選擇一個「進階出勤管理」選項。"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_users_view_form_profile

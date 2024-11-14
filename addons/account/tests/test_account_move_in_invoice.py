@@ -1149,7 +1149,7 @@ class TestAccountMoveInInvoiceOnchanges(AccountTestInvoicingCommon):
 
         bank1 = self.env['res.partner.bank'].create({
             'acc_number': 'BE43798822936101',
-            'partner_id': self.partner_a.id,
+            'partner_id': self.company_data['company'].partner_id.id,
         })
 
         move_reversal = self.env['account.move.reversal'].with_context(active_model="account.move", active_ids=self.invoice.ids).create({
@@ -2518,7 +2518,7 @@ class TestAccountMoveInInvoiceOnchanges(AccountTestInvoicingCommon):
         self.assertEqual(payment_term_line.name, 'test')
         with Form(self.invoice) as move_form:
             move_form.payment_reference = False
-        self.assertEqual(payment_term_line.name, '', 'Payment term line was not changed')
+        self.assertEqual(payment_term_line.name, False, 'Payment term line was not changed')
 
     def test_purchase_uom_on_vendor_bills(self):
         uom_gram = self.env.ref('uom.product_uom_gram')
@@ -2539,3 +2539,16 @@ class TestAccountMoveInInvoiceOnchanges(AccountTestInvoicingCommon):
         bill = self.init_invoice(move_type='in_invoice', products=[product])
         bill_uom = bill.invoice_line_ids[0].product_uom_id
         self.assertEqual(bill_uom, uom_kgm)
+
+    def test_manual_label_change_on_payment_term_line(self):
+        """
+        Ensure label of the payment term line can be changed manually
+        """
+        payment_term_line = self.invoice.line_ids.filtered(lambda l: l.display_type == 'payment_term')
+        index = self.invoice.line_ids.ids.index(payment_term_line.id)
+        with Form(self.invoice) as move_form:
+            with move_form.line_ids.edit(index) as line_form:
+                line_form.name = 'XYZ'
+        move_form.save()
+        self.invoice.action_post()
+        self.assertEqual(payment_term_line.name, 'XYZ', 'Manual name of payment term line should be kept')
