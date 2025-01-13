@@ -356,7 +356,7 @@ class MailMail(models.Model):
             ]
         else:
             email_to_normalized = tools.email_normalize_all(self.email_to)
-            email_to = tools.email_split_and_format(self.email_to)
+            email_to = tools.email_split_and_format_normalize(self.email_to)
         # email_cc is added to the "to" when invoking send_email
         email_to_normalized += tools.email_normalize_all(self.email_cc)
         res = {
@@ -387,7 +387,7 @@ class MailMail(models.Model):
         group_per_email_from = defaultdict(list)
         for values in mail_values:
             # protect against ill-formatted email_from when formataddr was used on an already formatted email
-            emails_from = tools.email_split_and_format(values['email_from'])
+            emails_from = tools.email_split_and_format_normalize(values['email_from'])
             email_from = emails_from[0] if emails_from else values['email_from']
             mail_server_id = values['mail_server_id'][0] if values['mail_server_id'] else False
             group_per_email_from[mail_server_id, email_from].append(values['id'])
@@ -487,7 +487,7 @@ class MailMail(models.Model):
                     email_list.append(values)
 
                 # headers
-                headers = {}
+                headers = {'X-Odoo-Message-Id': mail.message_id}
                 ICP = self.env['ir.config_parameter'].sudo()
                 bounce_alias = ICP.get_param("mail.bounce.alias")
                 catchall_domain = ICP.get_param("mail.catchall.domain")
@@ -526,7 +526,7 @@ class MailMail(models.Model):
                     notifs.flush_recordset(['notification_status', 'failure_type', 'failure_reason'])
 
                 # protect against ill-formatted email_from when formataddr was used on an already formatted email
-                emails_from = tools.email_split_and_format(mail.email_from)
+                emails_from = tools.email_split_and_format_normalize(mail.email_from)
                 email_from = emails_from[0] if emails_from else mail.email_from
 
                 # build an RFC2822 email.message.Message object and send it without queuing
@@ -553,7 +553,7 @@ class MailMail(models.Model):
                         subject=mail.subject,
                         body=email.get('body'),
                         body_alternative=email.get('body_alternative'),
-                        email_cc=tools.email_split(mail.email_cc),
+                        email_cc=tools.email_split_and_format_normalize(mail.email_cc),
                         reply_to=mail.reply_to,
                         attachments=attachments,
                         message_id=mail.message_id,
@@ -587,7 +587,13 @@ class MailMail(models.Model):
                             raise
                 if res:  # mail has been sent at least once, no major exception occurred
                     mail.write({'state': 'sent', 'message_id': res, 'failure_reason': False})
-                    _logger.info('Mail with ID %r and Message-Id %r successfully sent', mail.id, mail.message_id)
+                    _logger.info(
+                        "Mail with ID %r and Message-Id %r from %r to (redacted) %r successfully sent",
+                        mail.id,
+                        mail.message_id,
+                        tools.email_normalize(msg['from']),
+                        tools.mail.email_anonymize(tools.email_normalize(msg['to']))
+                    )
                     # /!\ can't use mail.state here, as mail.refresh() will cause an error
                     # see revid:odo@openerp.com-20120622152536-42b2s28lvdv3odyr in 6.1
                 mail._postprocess_sent_message(success_pids=success_pids, failure_type=failure_type)

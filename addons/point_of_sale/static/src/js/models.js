@@ -134,6 +134,7 @@ class PosGlobalState extends PosModel {
             },
         };
 
+        this.syncingOrders = new Set();
         this.tempScreenIsShown = false;
         // these dynamic attributes can be watched for change by other models or widgets
         Object.assign(this, {
@@ -962,20 +963,31 @@ class PosGlobalState extends PosModel {
         if (!orders || !orders.length) {
             return Promise.resolve([]);
         }
-        this.set_synch('connecting', orders.length);
+
+        // Filter out orders that are already being synced
+        const ordersToSync = orders.filter(order => !this.syncingOrders.has(order.id));
+
+        if (!ordersToSync.length) {
+            return Promise.resolve([]);
+        }
+
+        // Add these order IDs to the syncing set
+        ordersToSync.forEach(order => this.syncingOrders.add(order.id));
+
+        this.set_synch('connecting', ordersToSync.length);
         options = options || {};
 
         var self = this;
-        var timeout = typeof options.timeout === 'number' ? options.timeout : 30000 * orders.length;
+        var timeout = typeof options.timeout === 'number' ? options.timeout : 30000 * ordersToSync.length;
 
         // Keep the order ids that are about to be sent to the
         // backend. In between create_from_ui and the success callback
         // new orders may have been added to it.
-        var order_ids_to_sync = _.pluck(orders, 'id');
+        var order_ids_to_sync = _.pluck(ordersToSync, 'id');
 
         // we try to send the order. shadow prevents a spinner if it takes too long. (unless we are sending an invoice,
         // then we want to notify the user that we are waiting on something )
-        var args = [_.map(orders, function (order) {
+        var args = [_.map(ordersToSync, function (order) {
                 order.to_invoice = options.to_invoice || false;
                 return order;
             })];
@@ -992,12 +1004,14 @@ class PosGlobalState extends PosModel {
             .then(function (server_ids) {
                 _.each(order_ids_to_sync, function (order_id) {
                     self.db.remove_order(order_id);
+                    self.syncingOrders.delete(order_id)
                 });
                 self.failed = false;
                 self.set_synch('connected');
                 return server_ids;
             }).catch(function (error){
-                console.warn('Failed to send orders:', orders);
+                ordersToSync.forEach(order_id => self.syncingOrders.delete(order_id));
+                console.warn('Failed to send orders:', ordersToSync);
                 if(error.code === 200 ){    // Business Logic Error, not a connection problem
                     // Hide error if already shown before ...
                     if ((!self.failed || options.show_error) && !options.to_invoice) {
@@ -1639,17 +1653,22 @@ class Product extends PosModel {
         // pricelist that have base == 'pricelist'.
         return price;
     }
-    get_display_price(pricelist, quantity) {
+    _compute_display_price(pricelist, quantity, discount = 0) {
         const order = this.pos.get_order();
+        const unitPrice = this.get_price(pricelist, quantity) * (1.0 - (discount / 100.0));
         const taxes = this.pos.get_taxes_after_fp(this.taxes_id, order && order.fiscal_position);
         const currentTaxes = this.pos.getTaxesByIds(this.taxes_id);
-        const priceAfterFp = this.pos.computePriceAfterFp(this.get_price(pricelist, quantity), currentTaxes);
+        const priceAfterFp = this.pos.computePriceAfterFp(unitPrice, currentTaxes);
         const allPrices = this.pos.compute_all(taxes, priceAfterFp, 1, this.pos.currency.rounding);
-        if (this.pos.config.iface_tax_included === 'total') {
-            return allPrices.total_included;
-        } else {
-            return allPrices.total_excluded;
-        }
+        return this.pos.config.iface_tax_included === 'total' ? allPrices.total_included : allPrices.total_excluded;
+    }
+
+    get_display_price(pricelist, quantity) {
+        return this._compute_display_price(pricelist, quantity);
+    }
+
+    get_display_price_discount(pricelist, quantity, discount) {
+        return this._compute_display_price(pricelist, quantity, discount);
     }
 }
 Registries.Model.add(Product);
@@ -1698,7 +1717,6 @@ class Orderline extends PosModel {
         this.product = this.pos.db.get_product_by_id(json.product_id);
         this.set_product_lot(this.product);
         this.price = json.price_unit;
-        this.price_manually_set = json.price_manually_set;
         this.price_automatically_set = json.price_automatically_set;
         this.set_discount(json.discount);
         this.set_quantity(json.qty, 'do not recompute unit price');
@@ -1717,6 +1735,9 @@ class Orderline extends PosModel {
         this.set_customer_note(json.customer_note);
         this.refunded_qty = json.refunded_qty;
         this.refunded_orderline_id = json.refunded_orderline_id;
+        this.price_manually_set = json.price_manually_set ||
+            this.get_display_price() !==
+            this.product.get_display_price_discount(this.order.pricelist, this.get_quantity(), this.get_discount()) * this.get_quantity();
     }
     clone(){
         var orderline = Orderline.create({},{
@@ -3171,7 +3192,7 @@ class Order extends PosModel {
         return round_pr(this.orderlines.reduce((sum, orderLine) => {
             if (!ignored_product_ids.includes(orderLine.product.id)) {
                 sum += (orderLine.getUnitDisplayPriceBeforeDiscount() * (orderLine.get_discount()/100) * orderLine.get_quantity());
-                if (orderLine.display_discount_policy() === 'without_discount'){
+                if (orderLine.display_discount_policy() === 'without_discount' && !orderLine.price_manually_set){
                     sum += ((orderLine.get_taxed_lst_unit_price() - orderLine.getUnitDisplayPriceBeforeDiscount()) * orderLine.get_quantity());
                 }
             }
