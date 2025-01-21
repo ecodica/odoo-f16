@@ -152,7 +152,7 @@ def drop_depending_views(cr, table, column):
     """drop views depending on a field to allow the ORM to resize it in-place"""
     for v, k in get_depending_views(cr, table, column):
         cr.execute("DROP {0} VIEW IF EXISTS {1} CASCADE".format("MATERIALIZED" if k == "m" else "", v))
-        _schema.debug("Drop view %r", v)
+        _schema.warning("Drop view %r", v)
 
 def get_depending_views(cr, table, column):
     # http://stackoverflow.com/a/11773226/75349
@@ -305,8 +305,10 @@ def drop_view_if_exists(cr, viewname):
     kind = table_kind(cr, viewname)
     if kind == 'v':
         cr.execute("DROP VIEW {} CASCADE".format(viewname))
+        _schema.warning("DROP VIEW CASCADE %r", viewname)
     elif kind == 'm':
         cr.execute("DROP MATERIALIZED VIEW {} CASCADE".format(viewname))
+        _schema.warning("DROP MATERIALIZED VIEW CASCADE %r", viewname)
 
 def escape_psql(to_escape):
     return to_escape.replace('\\', r'\\').replace('%', r'\%').replace('_', r'\_')

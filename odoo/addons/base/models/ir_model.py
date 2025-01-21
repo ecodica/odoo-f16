@@ -20,6 +20,7 @@ from odoo.tools import pycompat, unique, OrderedSet, lazy_property
 from odoo.tools.safe_eval import safe_eval, datetime, dateutil, time
 
 _logger = logging.getLogger(__name__)
+_schema = logging.getLogger('odoo.schema')
 
 MODULE_UNINSTALL_FLAG = '_force_unlink'
 RE_ORDER_FIELDS = re.compile(r'"?(\w+)"?\s*(?:asc|desc)?', flags=re.I)
@@ -301,8 +302,10 @@ class IrModel(models.Model):
                 kind = tools.table_kind(self._cr, table)
                 if kind == 'v':
                     self._cr.execute(sql.SQL('DROP VIEW {}').format(sql.Identifier(table)))
+                    _schema.warning("DROP VIEW %r", table)
                 elif kind == 'r':
                     self._cr.execute(sql.SQL('DROP TABLE {} CASCADE').format(sql.Identifier(table)))
+                    _schema.warning("DROP TABLE CASCADE %r", table)
             else:
                 _logger.runbot('The model %s could not be dropped because it did not exist in the registry.', model.model)
         return True
@@ -774,6 +777,7 @@ class IrModelFields(models.Model):
                     self._cr.execute(sql.SQL('ALTER TABLE {} DROP COLUMN {} CASCADE').format(
                         sql.Identifier(model._table), sql.Identifier(field.name),
                     ))
+                    _schema.warning("Table %r DROP COLUMN CASCADE %r", model._table, field.name)
                 if field.state == 'manual' and field.ttype == 'many2many':
                     rel_name = field.relation_table or (is_model and model._fields[field.name].relation)
                     tables_to_drop.add(rel_name)
@@ -788,7 +792,7 @@ class IrModelFields(models.Model):
             tables_to_keep = set(row[0] for row in self._cr.fetchall())
             for rel_name in tables_to_drop - tables_to_keep:
                 self._cr.execute(sql.SQL('DROP TABLE {}').format(sql.Identifier(rel_name)))
-
+                _schema.warning("DROP TABLE %r", rel_name)
         return True
 
     def _prepare_update(self):
@@ -1750,6 +1754,7 @@ class IrModelRelation(models.Model):
         # drop m2m relation tables
         for table in to_drop:
             self._cr.execute(sql.SQL('DROP TABLE {} CASCADE').format(sql.Identifier(table)))
+            _schema.warning("DROP TABLE CASCADE %r", table)
             _logger.info('Dropped table %s', table)
 
     def _reflect_relation(self, model, table, module):

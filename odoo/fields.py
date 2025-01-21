@@ -1512,8 +1512,8 @@ class Float(Field):
         # with all significant digits.
         # FLOAT8 type is still the default when there is no precision because it
         # is faster for most operations (sums, etc.)
-        return ('numeric', 'numeric') if self._digits is not None else \
-               ('float8', 'double precision')
+        return ('numeric', 'numeric') # if self._digits is not None else \
+               # ('float8', 'double precision') [ECODICA] prefer numerics
 
     def get_digits(self, env):
         if isinstance(self._digits, str):

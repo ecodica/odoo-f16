@@ -108,6 +108,23 @@ def _create_empty_database(name):
             # database-altering operations cannot be executed inside a transaction
             cr.rollback()
             cr._cnx.autocommit = True
+            # KGB TODO: pg17 --locale-provider=builtin --builtin-locale=C.UTF8
+            #   [ ENCODING [=] encoding ]
+            # [ LOCALE_PROVIDER [=] locale_provider ]  -> builtin
+            # [ LOCALE [=] locale ]       -> C.UTF-8
+            # [ LC_COLLATE [=] lc_collate ] -> C.UTF-8
+            # [ LC_CTYPE [=] lc_ctype ] -> C.UTF-8
+            # [ BUILTIN_LOCALE [=] builtin_locale ] -> C.UTF-8
+
+            # [ STRATEGY [=] strategy ]
+            # [ ICU_LOCALE [=] icu_locale ]
+            # [ ICU_RULES [=] icu_rules ]
+            # [ COLLATION_VERSION = collation_version ]
+            # [ TABLESPACE [=] tablespace_name ]
+            # [ ALLOW_CONNECTIONS [=] allowconn ]
+            # [ CONNECTION LIMIT [=] connlimit ]
+            # [ IS_TEMPLATE [=] istemplate ]
+            # [ OID [=] oid ]
 
             # 'C' collate is only safe with template0, but provides more useful indexes
             collate = sql.SQL("LC_COLLATE 'C'" if chosen_template == 'template0' else "")
