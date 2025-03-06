@@ -534,7 +534,7 @@ def adapt_version(version):
         version = '%s.%s' % (serie, version)
     return version
 
-current_test = None
+current_test = False
 
 
 def check_python_external_dependency(pydep):

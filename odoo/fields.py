@@ -70,7 +70,7 @@ def resolve_mro(model, name, predicate):
         classes are ignored.
     """
     result = []
-    for cls in model._model_classes:
+    for cls in model._model_classes__:
         value = cls.__dict__.get(name, Default)
         if value is Default:
             continue
@@ -1195,9 +1195,21 @@ class Field(MetaField('DummyField', (object,), {})):
                 value = env.cache.get(record, self)
 
             elif self.store and record._origin and not (self.compute and self.readonly):
-                # new record with origin: fetch from origin
-                value = self.convert_to_cache(record._origin[self.name], record, validate=False)
-                env.cache.set(record, self, value)
+                # new record with origin: fetch from origin, and assign the
+                # records to prefetch in cache (which is necessary for
+                # relational fields to "map" prefetching ids to their value)
+                recs = record._in_cache_without(self)
+                try:
+                    for rec in recs:
+                        if rec._origin:
+                            value = self.convert_to_cache(rec._origin[self.name], rec, validate=False)
+                            env.cache.set(rec, self, value)
+                    value = env.cache.get(record, self)
+                except (AccessError, MissingError):
+                    if len(recs) == 1:
+                        raise
+                    value = self.convert_to_cache(record._origin[self.name], record, validate=False)
+                    env.cache.set(record, self, value)
 
             elif self.compute:
                 # non-stored field or new record without origin: compute
@@ -1819,18 +1831,24 @@ class _String(Field):
                 if term_text:
                     text2terms[term_text].append(term)
 
+            is_text = self.translate.is_text if hasattr(self.translate, 'is_text') else lambda term: True
+            term_adapter = self.translate.term_adapter if hasattr(self.translate, 'term_adapter') else None
             for old_term in list(translation_dictionary.keys()):
                 if old_term not in new_terms:
                     old_term_text = self.get_text_content(old_term)
                     matches = get_close_matches(old_term_text, text2terms, 1, 0.9)
                     if matches:
                         closest_term = get_close_matches(old_term, text2terms[matches[0]], 1, 0)[0]
-                        if closest_term in translation_dictionary:
-                            continue
-                        old_is_text = old_term == self.get_text_content(old_term)
-                        closest_is_text = closest_term == self.get_text_content(closest_term)
+                        old_is_text = is_text(old_term)
+                        closest_is_text = is_text(closest_term)
                         if old_is_text or not closest_is_text:
-                            translation_dictionary[closest_term] = translation_dictionary.pop(old_term)
+                            if not closest_is_text and records.env.context.get("install_mode") and lang == 'en_US' and term_adapter:
+                                adapter = term_adapter(closest_term)
+                                if adapter(old_term) is None:  # old term and closest_term have different structures
+                                     continue
+                                translation_dictionary[closest_term] = {k: adapter(v) for k, v in translation_dictionary.pop(old_term).items()}
+                            else:
+                                translation_dictionary[closest_term] = translation_dictionary.pop(old_term)
             # pylint: disable=not-callable
             new_translations = {
                 l: self.translate(lambda term: translation_dictionary.get(term, {l: None})[l], cache_value)
