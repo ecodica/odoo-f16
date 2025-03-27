@@ -27,7 +27,7 @@ class PickingType(models.Model):
                                     'stock.group_stock_multi_locations,'
                                     'stock.group_tracking_lot')
 
-    name = fields.Char('Operation Type', required=True, translate=True)
+    name = fields.Char('Operation Type', required=True, translate=False)
     color = fields.Integer('Color')
     sequence = fields.Integer('Sequence', help="Used to order the 'All Operations' kanban view")
     sequence_id = fields.Many2one(
