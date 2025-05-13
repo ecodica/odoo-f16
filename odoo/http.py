@@ -1071,7 +1071,7 @@ class HTTPRequest:
     def __init__(self, environ):
         httprequest = werkzeug.wrappers.Request(environ)
         httprequest.user_agent_class = UserAgent  # use vendored userAgent since it will be removed in 2.1
-        httprequest.parameter_storage_class = werkzeug.datastructures.ImmutableOrderedMultiDict
+        httprequest.parameter_storage_class = werkzeug.datastructures.ImmutableMultiDict
         httprequest.max_form_memory_size = 10 * 1024 * 1024  # 10 MB
 
         self.__wrapped = httprequest
@@ -1466,7 +1466,7 @@ class Request:
                         profile_session=self.session.profile_session,
                         collectors=self.session.profile_collectors,
                         params=self.session.profile_params,
-                    )
+                    )._get_cm_proxy()
                 except Exception:
                     _logger.exception("Failure during Profiler creation")
                     self.session.profile_session = None

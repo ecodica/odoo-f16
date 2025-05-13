@@ -487,7 +487,7 @@ class SaleOrder(models.Model):
         Returns all programs that give points on the current order.
         """
         self.ensure_one()
-        return self.coupon_point_ids.coupon_id.program_id
+        return self.coupon_point_ids.filtered('points').coupon_id.program_id
 
     def _get_reward_programs(self):
         """
@@ -501,7 +501,9 @@ class SaleOrder(models.Model):
         Returns all coupons that are a reward.
         """
         self.ensure_one()
-        return self.coupon_point_ids.coupon_id.filtered(lambda c: c.program_id.applies_on == 'future')
+        return self.coupon_point_ids.filtered('points').coupon_id.filtered(
+            lambda c: c.program_id.applies_on == 'future',
+        )
 
     def _get_applied_programs(self):
         """
@@ -712,13 +714,18 @@ class SaleOrder(models.Model):
         # |       STEP 1: Retrieve all applicable programs    |
         # +===================================================+
 
-        # Automatically load in eWallet coupons
+        # Automatically load in eWallet and loyalty cards coupons with previously received points
         if self._allow_nominative_programs():
-            ewallet_coupons = self.env['loyalty.card'].search(
-                [('id', 'not in', self.applied_coupon_ids.ids), ('partner_id', '=', self.partner_id.id),
-                ('points', '>', 0), ('program_id.program_type', '=', 'ewallet')])
-            if ewallet_coupons:
-                self.applied_coupon_ids += ewallet_coupons
+            loyalty_card = self.env['loyalty.card'].search([
+                ('id', 'not in', self.applied_coupon_ids.ids),
+                ('partner_id', '=', self.partner_id.id),
+                ('points', '>', 0),
+                '|', ('program_id.program_type', '=', 'ewallet'),
+                     '&', ('program_id.program_type', '=', 'loyalty'),
+                          ('program_id.applies_on', '!=', 'current'),
+            ])
+            if loyalty_card:
+                self.applied_coupon_ids += loyalty_card
         # Programs that are applied to the order and count points
         points_programs = self._get_points_programs()
         # Coupon programs that require the program's rules to match but do not count for points

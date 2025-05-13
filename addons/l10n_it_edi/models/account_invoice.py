@@ -34,15 +34,10 @@ class AccountMove(models.Model):
 
     def _get_l10n_it_amount_split_payment(self):
         self.ensure_one()
-        amount = 0.0
-        if self.is_sale_document(False):
-            for line in self.line_ids:
-                if line.tax_line_id and line.tax_line_id._l10n_it_is_split_payment():
-                    if self.move_type  == 'out_invoice':
-                        amount += line.credit
-                    else:
-                        amount += line.debit
-        return amount
+        if not self.is_sale_document(False):
+            return 0.0
+        sign = -1 if self.move_type == "out_invoice" else 1
+        return sum(sign * line.balance for line in self.line_ids.filtered(lambda l: l.tax_line_id and l.tax_line_id._l10n_it_is_split_payment()))
 
     @api.depends('edi_document_ids', 'edi_document_ids.attachment_id')
     def _compute_l10n_it_einvoice(self):
@@ -319,7 +314,7 @@ class AccountMove(models.Model):
         conversion_line = self.invoice_line_ids.sorted(lambda l: abs(l.balance), reverse=True)[0] if self.invoice_line_ids else None
         conversion_rate = float_repr(
             abs(conversion_line.balance / conversion_line.amount_currency), precision_digits=5,
-        ) if convert_to_euros and conversion_line else None
+        ) if convert_to_euros and conversion_line and conversion_line.amount_currency else None
 
         invoice_lines = self._l10n_it_edi_prepare_fatturapa_line_details(reverse_charge_refund, is_downpayment, convert_to_euros)
         tax_lines = self._l10n_it_edi_prepare_fatturapa_tax_details(tax_details, reverse_charge_refund)
