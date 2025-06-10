@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-06 20:35+0000\n"
+"POT-Creation-Date: 2025-05-22 18:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:54+0000\n"
 "Last-Translator: or balmas, 2025\n"
 "Language-Team: Hebrew (https://app.transifex.com/odoo/teams/41243/he/)\n"
@@ -2700,7 +2700,7 @@ msgstr ""
 #: code:addons/project/models/project.py:0
 #, python-format
 msgid "Invalid value: %s"
-msgstr ""
+msgstr "ערך לא חוקי: %s"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_share_wizard_view_form
@@ -3462,7 +3462,7 @@ msgstr "לקוח חסר"
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.portal_tasks_list
 msgid "No Milestone"
-msgstr ""
+msgstr "לא נמצאה אבן דרך"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_project_project_filter
@@ -3562,7 +3562,7 @@ msgstr ""
 #: code:addons/project/models/project.py:0
 #, python-format
 msgid "Not Implemented."
-msgstr ""
+msgstr "לא מיושם."
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_share_wizard__note
@@ -3901,6 +3901,20 @@ msgstr ""
 #: model:ir.model.fields,field_description:project.field_project_task__access_url
 msgid "Portal Access URL"
 msgstr "כתובת גישה לפורטל"
+
+#. module: project
+#. odoo-python
+#: code:addons/project/models/project.py:0
+#, python-format
+msgid "Portal Parent Task"
+msgstr ""
+
+#. module: project
+#. odoo-python
+#: code:addons/project/models/project.py:0
+#, python-format
+msgid "Portal Sub-tasks"
+msgstr ""
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task__portal_user_names
@@ -5031,7 +5045,7 @@ msgstr "משימות משנה שעות מתוכננות"
 #: model_terms:ir.ui.view,arch_db:project.rating_rating_view_form_project
 #: model_terms:ir.ui.view,arch_db:project.rating_rating_view_search_project
 msgid "Submitted On"
-msgstr ""
+msgstr "נשלח ל"
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_task__subtask_planned_hours

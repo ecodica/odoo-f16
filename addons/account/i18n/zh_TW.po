@@ -9,8 +9,8 @@
 # Yan-Kuan Wu, 2023
 # Martin Trigaux, 2023
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2023
-# Tony Ng, 2025
 # Wil Odoo, 2025
+# Tony Ng, 2025
 # 
 msgid ""
 msgstr ""
@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 20:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Wil Odoo, 2025\n"
+"Last-Translator: Tony Ng, 2025\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4106,7 +4106,7 @@ msgstr "日記帳相關的公司"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__composer_id
 msgid "Composer"
-msgstr "開立"
+msgstr "撰寫器"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__composition_mode
@@ -5902,7 +5902,7 @@ msgstr "稅項可用標籤所使用的動態網域"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__module_l10n_eu_oss
 msgid "EU Intra-community Distance Selling"
-msgstr "歐盟內部遠端銷售"
+msgstr "歐盟共同體內部跨境銷售"
 
 #. module: account
 #: model:account.incoterms,name:account.incoterm_EXW
@@ -8087,7 +8087,7 @@ msgstr "之前是\"%(previous)s\"，現在是\"%(current)s\"."
 #: code:addons/account/models/account_move_line.py:0
 #, python-format
 msgid "Items With Missing Analytic Distribution"
-msgstr ""
+msgstr "缺漏分析分佈的項目"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_company__fiscalyear_last_month__1
@@ -12141,7 +12141,7 @@ msgstr "檢視所有活動"
 #: code:addons/account/models/account_move_line.py:0
 #, python-format
 msgid "See items"
-msgstr ""
+msgstr "查看項目"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__type
@@ -13301,7 +13301,7 @@ msgstr "稅項名稱須獨一無二。"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position_tax__tax_src_id
 msgid "Tax on Product"
-msgstr "產品上的稅"
+msgstr "產品稅項"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax_repartition_line_template__plus_report_expression_ids
@@ -15210,7 +15210,7 @@ msgstr "展開所有"
 #. module: account
 #: model:ir.model.fields,help:account.field_account_report_line__code
 msgid "Unique identifier for this line."
-msgstr "此明細的唯一識別."
+msgstr "此資料行的唯一識別碼。"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__price_unit
