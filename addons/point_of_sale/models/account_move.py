@@ -82,6 +82,13 @@ class AccountMove(models.Model):
     def _compute_tax_totals(self):
         return super(AccountMove, self.with_context(linked_to_pos=bool(self.sudo().pos_order_ids)))._compute_tax_totals()
 
+    def _compute_is_storno(self):
+        # EXTENDS 'account'
+        super()._compute_is_storno()
+        for move in self:
+            move.is_storno = move.is_storno or (
+                move.company_id.account_storno and move.reversed_pos_order_id
+            )
 
 
 class AccountMoveLine(models.Model):

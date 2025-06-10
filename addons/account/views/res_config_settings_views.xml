@@ -357,8 +357,8 @@
                                 </div>
                             </div>
                         </block>
-                        <block title="Storno Accounting" id="storno" groups="account.group_account_user">
-                            <setting id="enable_storno_accounting" company_dependent="1" help="Use Storno accounting" title="Allows you to use Storno accounting.">
+                        <block title="Storno Accounting" id="storno" groups="account.group_account_user" invisible="not display_account_storno">
+                            <setting id="enable_storno_accounting" company_dependent="1" help="Use negative numbers to reverse original entries">
                                 <field name="account_storno"/>
                             </setting>
                         </block>

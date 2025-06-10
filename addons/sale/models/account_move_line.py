@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare, float_is_zero
 
@@ -14,6 +14,17 @@ class AccountMoveLine(models.Model):
         'sale_order_line_invoice_rel',
         'invoice_line_id', 'order_line_id',
         string='Sales Order Lines', readonly=True, copy=False)
+
+    @api.depends('balance')
+    def _compute_is_storno(self):
+        # EXTENDS 'account'
+        super()._compute_is_storno()
+        for line in self:
+            if line.is_downpayment:
+                # Normal downpayments have a negative balance (credit on customer invoice)
+                # Positive balance indicate reversal lines for previous downpayments,
+                # which should be treated as storno line if storno accounting is enabled.
+                line.is_storno = line.company_id.account_storno and line.balance > 0.0
 
     def _copy_data_extend_business_fields(self, values):
         # OVERRIDE to copy the 'sale_line_ids' field as well.

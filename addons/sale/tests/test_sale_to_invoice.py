@@ -1340,3 +1340,160 @@ class TestSaleToInvoice(TestSaleCommon):
             invoice.team_id, team2,
             "Invoice team should be the same as the order's team",
         )
+
+    def test_invoice_from_order_without_lines(self):
+        """Test that an invoice can be created from a sale order with no product lines"""
+        sale_order = self.env['sale.order'].create({'partner_id': self.partner.id})
+        self.env['sale.order.line'].create({
+            'display_type': 'line_section',
+            'name': 'Test section',
+            'order_id': sale_order.id,
+        }).unlink()
+        sale_order.action_confirm()
+        wizard = self.env['sale.advance.payment.inv'].with_context({
+            'active_model': 'sale.order',
+            'active_ids': [sale_order.id],
+            'active_id': sale_order.id,
+            'default_journal_id': self.company_data['default_journal_sale'].id,
+        }).create({
+            'advance_payment_method': 'percentage',
+            'amount': 10,
+        })
+        action_values = wizard.create_invoices()
+
+        invoice = self.env['account.move'].browse(action_values['res_id'])
+        self.assertTrue(invoice)
+        self.assertEqual(invoice.partner_id, sale_order.partner_id)
+
+    def test_downpayment_storno(self):
+        """ Test invoice with a way of downpayment and check downpayment's move line is created
+            and also check downpayment's move line is reversed (in final invoice) with
+            negative amount when storno is enabled
+        """
+        def create_so_with_downpayments():
+            sale_order = self.env['sale.order'].create({
+                'partner_id': self.partner_a.id,
+                'order_line': [
+                    Command.create({
+                        'product_id': self.company_data['product_delivery_no'].id,
+                        'product_uom_qty': 20,
+                        'price_unit': 30,
+                    }),
+                ],
+            })
+            sale_order.action_confirm()
+            sale_order.order_line[0].qty_delivered = 20
+
+            # Let's do 2 invoices for a deposit of 50 each
+            downpayment = self.env['sale.advance.payment.inv'].create({
+                'advance_payment_method': 'fixed',
+                'fixed_amount': 50,
+                'sale_order_ids': sale_order,
+            })
+            downpayment.create_invoices()
+            downpayment2 = self.env['sale.advance.payment.inv'].create({
+                'advance_payment_method': 'fixed',
+                'fixed_amount': 50,
+                'sale_order_ids': sale_order,
+            })
+            downpayment2.create_invoices()
+
+            self.assertEqual(len(sale_order.invoice_ids), 2, 'Invoices should be created for the SO')
+            for invoice in sale_order.invoice_ids:
+                self.assertEqual(len(invoice.line_ids), 2, 'Downpayment invoice line should be created')
+                self.assertRecordValues(invoice.line_ids, [
+                    {'debit': 0, 'credit': 50, 'balance': -50, 'is_downpayment': True, 'account_type': 'income', 'display_type': 'product'},
+                    {'debit': 50, 'credit': 0, 'balance': 50, 'is_downpayment': False, 'account_type': 'asset_receivable', 'display_type': 'payment_term'},
+                ])
+
+            payment = self.env['sale.advance.payment.inv'].create({
+                'sale_order_ids': sale_order,
+            })
+            payment.create_invoices()
+            sale_order.invoice_ids.action_post()
+
+            self.assertEqual(len(sale_order.invoice_ids), 3, 'Invoice should be created for the SO')
+            return sale_order
+
+        sale_order_no_storno = create_so_with_downpayments()
+        invoice_no_storno = max(sale_order_no_storno.invoice_ids)
+        self.assertEqual(len(invoice_no_storno.line_ids), 5, 'Invoice line should be created')
+        self.assertRecordValues(invoice_no_storno.line_ids, [
+            {'debit': 0, 'credit': 600.0, 'balance': -600.0, 'is_downpayment': False, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 0, 'credit': 0, 'balance': 0, 'is_downpayment': False, 'account_type': False, 'display_type': 'line_section'},
+            {'debit': 50.0, 'credit': 0, 'balance': 50.0, 'is_downpayment': True, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 50.0, 'credit': 0, 'balance': 50.0, 'is_downpayment': True, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 500.0, 'credit': 0, 'balance': 500.0, 'is_downpayment': False, 'account_type': 'asset_receivable', 'display_type': 'payment_term'},
+        ])
+
+        self.env.company.account_storno = True
+        sale_order_storno = create_so_with_downpayments()
+        invoice_storno = max(sale_order_storno.invoice_ids)
+        self.assertEqual(len(invoice_storno.line_ids), 5, 'Invoice line should be created')
+        self.assertRecordValues(invoice_storno.line_ids, [
+            {'debit': 0.0, 'credit': 600.0, 'balance': -600.0, 'is_downpayment': False, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 0.0, 'credit': 0.0, 'balance': 0.0, 'is_downpayment': False, 'account_type': False, 'display_type': 'line_section'},
+            {'debit': 0.0, 'credit': -50.0, 'balance': 50.0, 'is_downpayment': True, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 0.0, 'credit': -50.0, 'balance': 50.0, 'is_downpayment': True, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 500.0, 'credit': 0.0, 'balance': 500.0, 'is_downpayment': False, 'account_type': 'asset_receivable', 'display_type': 'payment_term'},
+        ])
+
+    def test_negative_amount_storno(self):
+        """ Test invoice with negative price or negative quantity and
+            also move is created with the negative amount if storno is enabled.
+        """
+        def create_sale_order_with_negative_amount():
+            sale_order = self.env['sale.order'].create({
+                'partner_id': self.partner_a.id,
+                'order_line': [
+                    Command.create({
+                        'product_id': self.company_data['product_delivery_no'].id,
+                        'product_uom_qty': 20,
+                        'price_unit': 30,
+                    }),
+                    Command.create({
+                        'product_id': self.company_data['product_delivery_no'].id,
+                        'product_uom_qty': 5,
+                        'price_unit': -10,
+                    }),
+                    Command.create({
+                        'product_id': self.company_data['product_delivery_no'].id,
+                        'product_uom_qty': -5,
+                        'price_unit': 20,
+                    }),
+                ],
+            })
+            sale_order.action_confirm()
+            sale_order.order_line[0].qty_delivered = 20
+            sale_order.order_line[1].qty_delivered = 5
+            sale_order.order_line[2].qty_delivered = -5
+
+            payment = self.env['sale.advance.payment.inv'].create({
+                'sale_order_ids': sale_order,
+            })
+            payment.create_invoices()
+            sale_order.invoice_ids.action_post()
+
+            self.assertEqual(len(sale_order.invoice_ids), 1, 'Invoice should be created for the SO')
+            return sale_order
+
+        sale_order_no_storno = create_sale_order_with_negative_amount()
+        invoice_no_storno = sale_order_no_storno.invoice_ids
+        self.assertEqual(len(invoice_no_storno.line_ids), 4, 'Invoice line should be created')
+        self.assertRecordValues(invoice_no_storno.line_ids, [
+            {'debit': 0.0, 'credit': 600.0, 'balance': -600.0, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 50.0, 'credit': 0.0, 'balance': 50.0, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 100.0, 'credit': 0.0, 'balance': 100.0, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 450.0, 'credit': 0.0, 'balance': 450.0, 'account_type': 'asset_receivable', 'display_type': 'payment_term'},
+        ])
+
+        self.env.company.account_storno = True
+        sale_order_storno = create_sale_order_with_negative_amount()
+        invoice_storno = sale_order_storno.invoice_ids
+        self.assertEqual(len(invoice_storno.line_ids), 4, 'Invoice line should be created')
+        self.assertRecordValues(invoice_storno.line_ids, [
+            {'debit': 0.0, 'credit': 600.0, 'balance': -600.0, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 0.0, 'credit': -50.0, 'balance': 50.0, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 0.0, 'credit': -100.0, 'balance': 100.0, 'account_type': 'income', 'display_type': 'product'},
+            {'debit': 450.0, 'credit': 0.0, 'balance': 450.0, 'account_type': 'asset_receivable', 'display_type': 'payment_term'},
+        ])
