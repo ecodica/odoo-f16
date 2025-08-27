@@ -30,6 +30,7 @@
 # Kristina Palaš, 2024
 # Bole <bole@dajmi5.com>, 2025
 # Vladimir Vrgoč, 2025
+# Ivica Dimjašević, 2025
 # Luka Carević <luka@uvid.hr>, 2025
 # 
 msgid ""
@@ -1924,7 +1925,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/call_settings_menu/call_settings_menu.xml:0
 #, python-format
 msgid "Blur video background"
-msgstr ""
+msgstr "Zamuti video pozadinu"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_template__body_html
@@ -1962,7 +1963,7 @@ msgstr "Odbijeno"
 #: code:addons/mail/static/src/components/call_settings_menu/call_settings_menu.xml:0
 #, python-format
 msgid "Browser default"
-msgstr ""
+msgstr "Zadani preglednik"
 
 #. module: mail
 #. odoo-javascript
@@ -2896,7 +2897,7 @@ msgstr "Krajnji rok: %s"
 #: code:addons/mail/static/src/models/call_action_list_view.js:0
 #, python-format
 msgid "Deafen"
-msgstr ""
+msgstr "Isključi zvuk"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.message_activity_assigned
@@ -3088,7 +3089,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.mail_channel_rtc_session_view_tree
 #, python-format
 msgid "Disconnect"
-msgstr ""
+msgstr "Prekini vezu"
 
 #. module: mail
 #. odoo-javascript
@@ -4103,7 +4104,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/composer/composer.xml:0
 #, python-format
 msgid "Full composer"
-msgstr ""
+msgstr "Prošireni uređivač"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_channel__default_display_mode__video_full_screen
@@ -4210,7 +4211,7 @@ msgstr "Grupe"
 #: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__guest_id
 #, python-format
 msgid "Guest"
-msgstr ""
+msgstr "Gost"
 
 #. module: mail
 #. odoo-python
@@ -4253,7 +4254,7 @@ msgstr "Poslati e-poštom"
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__res_users__notification_type__inbox
 msgid "Handle in Odoo"
-msgstr ""
+msgstr "Obradi u Odoo-u"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_ir_model__is_mail_activity
@@ -4351,7 +4352,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/call_main_view/call_main_view.xml:0
 #, python-format
 msgid "Hide sidebar"
-msgstr ""
+msgstr "Sakrij bočnu traku"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_message_subtype__hidden
@@ -5495,7 +5496,7 @@ msgstr ""
 #: code:addons/mail/static/src/models/channel_invitation_form.js:0
 #, python-format
 msgid "Link copied!"
-msgstr ""
+msgstr "Link je kopiran!"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_wizard_invite__partner_ids
@@ -5717,7 +5718,7 @@ msgstr "Predložak maila"
 #. module: mail
 #: model:res.groups,name:mail.group_mail_template_editor
 msgid "Mail Template Editor"
-msgstr ""
+msgstr "Uredi predložak maila"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_template_reset
@@ -6101,7 +6102,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/message_list/message_list.xml:0
 #, python-format
 msgid "Messages marked as read will appear in the history."
-msgstr ""
+msgstr "Poruke označene kao pročitane prikazat će se u povijesti."
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_message_subtype__internal
@@ -6271,7 +6272,7 @@ msgstr ""
 #: code:addons/mail/static/src/models/call_action_list_view.js:0
 #, python-format
 msgid "Mute"
-msgstr ""
+msgstr "Isključi mikrofon"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__my_activity_date_deadline
@@ -6513,7 +6514,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/message_list/message_list.xml:0
 #, python-format
 msgid "No history messages"
-msgstr ""
+msgstr "Nema povijesti poruka"
 
 #. module: mail
 #. odoo-python
@@ -6543,7 +6544,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/message_list/message_list.xml:0
 #, python-format
 msgid "No starred messages"
-msgstr ""
+msgstr "Nema poruka sa zvjezdicom"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__reply_to_force_new
@@ -6563,7 +6564,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/channel_invitation_form/channel_invitation_form.xml:0
 #, python-format
 msgid "No user found that is not already a member of this channel."
-msgstr ""
+msgstr "Nije pronađen korisnik koji već nije član ovog kanala."
 
 #. module: mail
 #. odoo-javascript
@@ -8006,7 +8007,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/composer/composer.xml:0
 #, python-format
 msgid "Replying to"
-msgstr ""
+msgstr "Odgovaranje na"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_template__report_name
@@ -8048,7 +8049,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/attachment_viewer/attachment_viewer.xml:0
 #, python-format
 msgid "Reset Zoom (0)"
-msgstr ""
+msgstr "Poništi uvećanje (0)"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_ir_actions_server__activity_user_id
@@ -8372,7 +8373,7 @@ msgstr "Pronađi..."
 #: code:addons/mail/static/src/js/views/activity/activity_controller.js:0
 #, python-format
 msgid "Search: %s"
-msgstr ""
+msgstr "Pretraži: %s"
 
 #. module: mail
 #. odoo-javascript
@@ -8665,7 +8666,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/follower_list_menu/follower_list_menu.xml:0
 #, python-format
 msgid "Show Followers"
-msgstr ""
+msgstr "Prikaži sljedbenike"
 
 #. module: mail
 #. odoo-javascript
@@ -8707,7 +8708,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/call_main_view/call_main_view.xml:0
 #, python-format
 msgid "Show sidebar"
-msgstr ""
+msgstr "Pokaži bočnu traku"
 
 #. module: mail
 #. odoo-javascript
@@ -8717,7 +8718,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/call_settings_menu/call_settings_menu.xml:0
 #, python-format
 msgid "Show video participants only"
-msgstr ""
+msgstr "Prikaži samo video sudionike"
 
 #. module: mail
 #. odoo-javascript
@@ -8870,7 +8871,7 @@ msgstr ""
 #: code:addons/mail/static/src/models/call_action_list_view.js:0
 #, python-format
 msgid "Stop camera"
-msgstr ""
+msgstr "Isključi kameru"
 
 #. module: mail
 #. odoo-javascript
@@ -9108,7 +9109,7 @@ msgstr "Predložak"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_template__template_category
 msgid "Template Category"
-msgstr ""
+msgstr "Kategorija predloška"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_template__template_fs
@@ -9775,7 +9776,7 @@ msgstr ""
 #: code:addons/mail/static/src/models/call_action_list_view.js:0
 #, python-format
 msgid "Turn camera on"
-msgstr ""
+msgstr "Uključi kameru"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_config_settings__twilio_account_token
@@ -9829,7 +9830,7 @@ msgstr "Vrsta aktivnosti iznimke na zapisu."
 #: code:addons/mail/static/src/components/channel_invitation_form/channel_invitation_form.xml:0
 #, python-format
 msgid "Type the name of a person"
-msgstr ""
+msgstr "Upišite ime osobe "
 
 #. module: mail
 #. odoo-javascript
@@ -9921,7 +9922,7 @@ msgstr ""
 #: code:addons/mail/static/src/models/call_action_list_view.js:0
 #, python-format
 msgid "Undeafen"
-msgstr ""
+msgstr "Uključi zvuk"
 
 #. module: mail
 #. odoo-javascript
@@ -9956,14 +9957,14 @@ msgstr "Nepoznata greška"
 #: code:addons/mail/static/src/models/call_action_list_view.js:0
 #, python-format
 msgid "Unmute"
-msgstr ""
+msgstr "Uključi zvuk"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/components/discuss_sidebar_category_item/discuss_sidebar_category_item.xml:0
 #, python-format
 msgid "Unpin Conversation"
-msgstr ""
+msgstr "Otkvači razgovor "
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel_member__message_unread_counter
@@ -10236,6 +10237,13 @@ msgstr "Video"
 #, python-format
 msgid "Video Settings"
 msgstr ""
+"Video postavke\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #. module: mail
 #. odoo-python
@@ -10307,7 +10315,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/call_settings_menu/call_settings_menu.xml:0
 #, python-format
 msgid "Voice detection threshold"
-msgstr ""
+msgstr "Prag detekcije glasa"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__volume
@@ -10409,7 +10417,7 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_compose_message_wizard_form
 msgid "Write your message here..."
-msgstr ""
+msgstr "Ovdje napišite svoju poruku..."
 
 #. module: mail
 #. odoo-python
@@ -10454,7 +10462,7 @@ msgid ""
 "You are about to leave this group conversation and will no longer have "
 "access to it unless you are invited again. Are you sure you want to "
 "continue?"
-msgstr ""
+msgstr "asdasd"
 
 #. module: mail
 #. odoo-python
@@ -10499,6 +10507,8 @@ msgstr ""
 msgid ""
 "You can mark any message as 'starred', and it shows up in this mailbox."
 msgstr ""
+"Bilo koju poruku možete označiti kao 'zvjezdicu' i ona će se prikazati u "
+"ovom poštanskom sandučiću."
 
 #. module: mail
 #. odoo-python
@@ -10609,7 +10619,7 @@ msgstr ""
 #: code:addons/mail/static/src/models/messaging_notification_handler.js:0
 #, python-format
 msgid "You unsubscribed from %s."
-msgstr ""
+msgstr "Napustili ste %s."
 
 #. module: mail
 #. odoo-javascript
@@ -20469,12 +20479,12 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.message_origin_link
 msgid "has been created from:"
-msgstr ""
+msgstr "je kreiran(a) iz:"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.message_origin_link
 msgid "has been modified from:"
-msgstr ""
+msgstr "je promijenjen(a) od:"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.message_activity_assigned
@@ -25151,7 +25161,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/call_participant_card/call_participant_card.xml:0
 #, python-format
 msgid "muted"
-msgstr ""
+msgstr "bešumno"
 
 #. module: mail
 #. odoo-javascript

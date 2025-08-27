@@ -32,6 +32,7 @@
 # Martin Trigaux, 2025
 # Mario Jureša <mario.juresa@uvid.hr>, 2025
 # Zvonimir Galic, 2025
+# Anes Sabic, 2025
 # Luka Carević <luka@uvid.hr>, 2025
 # 
 msgid ""
@@ -275,6 +276,8 @@ msgid ""
 ".\n"
 "                                                The website will still work if you reject or discard those cookies."
 msgstr ""
+".\n"
+"                                               Stranica će i dalje raditi ako odbijete kolačiće."
 
 #. module: website
 #. odoo-javascript
@@ -1384,12 +1387,12 @@ msgstr "Token pristupa"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.protected_403
 msgid "Access to this page"
-msgstr ""
+msgstr "Pristup ovoj stranici"
 
 #. module: website
 #: model:ir.model.constraint,message:website.constraint_website_visitor_access_token_unique
 msgid "Access token should be unique."
-msgstr ""
+msgstr "Pristupni token bi trebao biti unikatan."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_menus_logos
@@ -1448,13 +1451,13 @@ msgstr "Dodaj"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Add Elements"
-msgstr ""
+msgstr "Dodaj Elemente"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_table_of_content_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Add Item"
-msgstr ""
+msgstr "Dodaj Proizvod"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_media_list_options
@@ -1466,19 +1469,19 @@ msgstr "Dodaj medije"
 #: code:addons/website/static/src/components/dialog/edit_menu.xml:0
 #, python-format
 msgid "Add Mega Menu Item"
-msgstr ""
+msgstr "Dodaj Mega Menu Proizvod"
 
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/components/dialog/edit_menu.xml:0
 #, python-format
 msgid "Add Menu Item"
-msgstr ""
+msgstr "Dodaj Meni"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_social_media_options
 msgid "Add New Social Network"
-msgstr ""
+msgstr "Dodaj Novu Socijalnu Mrežu"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog_add_product_widget
@@ -1488,12 +1491,12 @@ msgstr "Dodaj proizvod"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_chart_options
 msgid "Add Row"
-msgstr ""
+msgstr "Dodaj Red"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_chart_options
 msgid "Add Serie"
-msgstr ""
+msgstr "Dodaj Seriju"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -1545,7 +1548,7 @@ msgstr ""
 #: code:addons/website/static/src/components/dialog/edit_menu.js:0
 #, python-format
 msgid "Add a menu item"
-msgstr ""
+msgstr "Dodaj stavku izbornika"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -1668,7 +1671,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.view_view_qweb
 #, python-format
 msgid "All Websites"
-msgstr ""
+msgstr "Sve Webstranice"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_big_icons_subtitles
@@ -1720,7 +1723,7 @@ msgstr "Dozvoljeno koristiti na formama"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Allows to do mass mailing campaigns to contacts"
-msgstr ""
+msgstr "Omogućuje slanje masovnih mailing kampanja kontaktima"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
@@ -2834,7 +2837,7 @@ msgstr "Postava"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website__configurator_done
 msgid "Configurator Done"
-msgstr ""
+msgstr "Završeno konfiguriranje"
 
 #. module: website
 #. odoo-javascript
@@ -2848,7 +2851,7 @@ msgstr "Potvrda"
 #: code:addons/website/static/src/xml/website.backend.xml:0
 #, python-format
 msgid "Connect Plausible"
-msgstr ""
+msgstr "Spoji Plausible"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.footer_custom
@@ -2868,7 +2871,7 @@ msgstr ""
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__has_google_search_console
 msgid "Console Google Search"
-msgstr ""
+msgstr "Console Google pretraživanja"
 
 #. module: website
 #: model:ir.model,name:website.model_res_partner
@@ -2954,7 +2957,7 @@ msgstr "Sadržaj"
 #: model:ir.model.fields,field_description:website.field_res_config_settings__cdn_activated
 #: model:ir.model.fields,field_description:website.field_website__cdn_activated
 msgid "Content Delivery Network (CDN)"
-msgstr ""
+msgstr "Mreža za isporuku sadržaja (CDN)"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -2994,7 +2997,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_res_config_settings__website_cookies_bar
 #: model:ir.model.fields,field_description:website.field_website__cookies_bar
 msgid "Cookies Bar"
-msgstr ""
+msgstr "Traka s kolačićima"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.cookie_policy
@@ -3103,7 +3106,7 @@ msgstr ""
 #: code:addons/website/static/src/xml/website.editor.xml:0
 #, python-format
 msgid "Create a Google Project and Get a Key"
-msgstr ""
+msgstr "Kreirajte Google projekt i preuzmite ključ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -3365,7 +3368,7 @@ msgstr "Zadani jezik"
 #. module: website
 #: model:website.menu,name:website.main_menu
 msgid "Default Main Menu"
-msgstr ""
+msgstr "Zadani glavni izbornik"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_options
@@ -3377,7 +3380,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_website__social_default_image
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Default Social Share Image"
-msgstr ""
+msgstr "Zadana slika za dijeljenje na društvenim mrežama"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -3410,7 +3413,7 @@ msgstr "Izbriši blokove"
 #: code:addons/website/static/src/components/dialog/edit_menu.xml:0
 #, python-format
 msgid "Delete Menu Item"
-msgstr ""
+msgstr "Obriši stavku izbornika"
 
 #. module: website
 #. odoo-javascript
@@ -3672,13 +3675,13 @@ msgstr "Naziv"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Display a customizable cookies bar on your website"
-msgstr ""
+msgstr "Prikaži prilagodljivu traku za kolačiće na svojoj web stranici"
 
 #. module: website
 #: model:ir.model.fields,help:website.field_res_config_settings__website_cookies_bar
 #: model:ir.model.fields,help:website.field_website__cookies_bar
 msgid "Display a customizable cookies bar on your website."
-msgstr ""
+msgstr "Prikaži prilagodljivu traku za kolačiće na svojoj web stranici"
 
 #. module: website
 #. odoo-python
@@ -3720,6 +3723,8 @@ msgid ""
 "Do not copy/paste code you do not understand, this could put your data at "
 "risk."
 msgstr ""
+"Nemojte kopirati i lijepiti kod koji ne razumijete – to može ugroziti vaše "
+"podatke."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_cards
@@ -3820,7 +3825,7 @@ msgstr ""
 #: code:addons/website/static/src/components/dialog/edit_menu.xml:0
 #, python-format
 msgid "Drag to the right to get a submenu"
-msgstr ""
+msgstr "Povucite udesno da biste dobili podmeni"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_menus_logos
@@ -3856,7 +3861,7 @@ msgstr "Dupliciraj"
 #: code:addons/website/static/src/components/dialog/page_properties.xml:0
 #, python-format
 msgid "Duplicate Page"
-msgstr ""
+msgstr "Dupliciraj stranicu"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_process_steps
@@ -3912,7 +3917,7 @@ msgstr ""
 #: code:addons/website/static/src/xml/website.backend.xml:0
 #, python-format
 msgid "Easily track your visitor with Plausible"
-msgstr ""
+msgstr "Jednostavno pratite svoje posjetitelje pomoću Plausiblea"
 
 #. module: website
 #. odoo-javascript
@@ -3947,7 +3952,7 @@ msgstr "Uredi izbornik"
 #: code:addons/website/static/src/components/dialog/edit_menu.xml:0
 #, python-format
 msgid "Edit Menu Item"
-msgstr ""
+msgstr "Uredi stavku izbornika"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -3975,7 +3980,7 @@ msgstr "Uredi u pozadini"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Edit robots.txt"
-msgstr ""
+msgstr "Uredi robots.txt"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.layout
@@ -4054,7 +4059,7 @@ msgstr ""
 #: code:addons/website/static/src/xml/website.editor.xml:0
 #, python-format
 msgid "Enable billing on your Google Project"
-msgstr ""
+msgstr "Omogućite naplatu na svom Google Projectu"
 
 #. module: website
 #: model:ir.model.fields,help:website.field_ir_model__website_form_access
@@ -4082,6 +4087,8 @@ msgstr ""
 msgid ""
 "Enter code that will be added before the </body> of every page of your site."
 msgstr ""
+"Unesite kod koji će biti dodan prije </body> oznake na svakoj stranici vašeg"
+" web-mjesta."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -4095,6 +4102,7 @@ msgstr ""
 msgid ""
 "Enter code that will be added into the <head> of every page of your site."
 msgstr ""
+"Unesite kod koji će biti dodan u <head> svake stranice vašeg web-mjesta."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -4531,7 +4539,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_theme_website_page__footer_visible
 #: model:ir.model.fields,field_description:website.field_website_page__footer_visible
 msgid "Footer Visible"
-msgstr ""
+msgstr "Podnožje vidljivo"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -4635,7 +4643,7 @@ msgstr "Puni zaslon"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_tabs_options
 msgid "Full Width"
-msgstr ""
+msgstr "Puna širina"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -4930,7 +4938,7 @@ msgstr ""
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website__has_social_default_image
 msgid "Has Social Default Image"
-msgstr ""
+msgstr "Ima zadanu sliku za društvene mreže"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -4947,7 +4955,7 @@ msgstr "Boja zaglavlja"
 #: model:ir.model.fields,field_description:website.field_theme_website_page__header_overlay
 #: model:ir.model.fields,field_description:website.field_website_page__header_overlay
 msgid "Header Overlay"
-msgstr ""
+msgstr "Zaglavlje s preklapanjem"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -4958,7 +4966,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_theme_website_page__header_visible
 #: model:ir.model.fields,field_description:website.field_website_page__header_visible
 msgid "Header Visible"
-msgstr ""
+msgstr "Zaglavlje vidljivo"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -5089,6 +5097,8 @@ msgstr ""
 msgid ""
 "Hint: Type '/' to search an existing page and '#' to link to an anchor."
 msgstr ""
+"Savjet: Upisom '/' potražite postojeću stranicu, a '#' za povezivanje na "
+"oznaku."
 
 #. module: website
 #. odoo-javascript
@@ -5265,6 +5275,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "If set, replaces the website logo as the default social share image."
 msgstr ""
+"Ako je postavljeno, zamjenjuje logo web stranice kao zadanu sliku za "
+"dijeljenje na društvenim mrežama."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.qweb_500
@@ -5675,7 +5687,7 @@ msgstr ""
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_menu__is_mega_menu
 msgid "Is Mega Menu"
-msgstr ""
+msgstr "Je Mega Meni"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_partner__is_published
@@ -5834,7 +5846,7 @@ msgstr "Pridružite nam se i učinite vaše poduzeće boljim mjestom."
 #: code:addons/website/static/src/components/dialog/seo.xml:0
 #, python-format
 msgid "Keep empty to use default value"
-msgstr ""
+msgstr "Ostavi prazno za korištenje zadane vrijednosti"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_ir_asset__key
@@ -6395,12 +6407,12 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Measurement ID"
-msgstr ""
+msgstr "ID za mjerenje"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_media_list_options
 msgid "Media"
-msgstr ""
+msgstr "Datoteka"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -6608,7 +6620,7 @@ msgstr "Modeli"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page__arch_updated
 msgid "Modified Architecture"
-msgstr ""
+msgstr "Izmijenjena arhitektura"
 
 #. module: website
 #: model:ir.model,name:website.model_ir_module_module
@@ -6629,7 +6641,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Monitor Google Search results data"
-msgstr ""
+msgstr "Pratite podatke o rezultatima Google pretraživanja"
 
 #. module: website
 #: model_terms:digest.tip,tip_description:website.digest_tip_website_0
@@ -7004,7 +7016,7 @@ msgstr "nije objavljeno"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_pages_view_search
 msgid "Not tracked"
-msgstr ""
+msgstr "Ne prati se"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.cookie_policy
@@ -7211,7 +7223,7 @@ msgstr ""
 #: model:ir.ui.menu,name:website.menu_optimize_seo
 #, python-format
 msgid "Optimize SEO"
-msgstr ""
+msgstr "Optimizacija SEO-a"
 
 #. module: website
 #. odoo-javascript
@@ -7587,12 +7599,12 @@ msgstr ""
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website__plausible_shared_key
 msgid "Plausible Shared Key"
-msgstr ""
+msgstr "Zajednički ključ za Plausible"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website__plausible_site
 msgid "Plausible Site"
-msgstr ""
+msgstr "Plausible stranica"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__plausible_site
@@ -7879,7 +7891,7 @@ msgstr "Objavljeno"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page__date_publish
 msgid "Publishing Date"
-msgstr ""
+msgstr "Datum objave"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -8029,7 +8041,7 @@ msgstr ""
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_menu__page_id
 msgid "Related Page"
-msgstr ""
+msgstr "Povezana stranica "
 
 #. module: website
 #. odoo-javascript
@@ -8513,7 +8525,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_website_page__seo_name
 #: model:ir.model.fields,field_description:website.field_website_seo_metadata__seo_name
 msgid "Seo name"
-msgstr ""
+msgstr "SEO naziv"
 
 #. module: website
 #. odoo-javascript
@@ -8591,7 +8603,7 @@ msgstr "Postavke"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Settings of Website"
-msgstr ""
+msgstr "Postavke Webstranice"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
@@ -8641,7 +8653,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Shared Link Auth"
-msgstr ""
+msgstr "Autentikacija putem zajedničke veze"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_menus_logos
@@ -8661,7 +8673,7 @@ msgstr ""
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page__customize_show
 msgid "Show As Optional Inherit"
-msgstr ""
+msgstr "Prikaži kao opcionalno nasljeđivanje"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -8919,7 +8931,7 @@ msgstr ""
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website__specific_user_account
 msgid "Specific User Account"
-msgstr ""
+msgstr "Specifični korisnički račun"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.list_hybrid
@@ -9271,7 +9283,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_countdown_options
 msgid "Text Color"
-msgstr ""
+msgstr "Boja teksta"
 
 #. module: website
 #. odoo-javascript
@@ -9728,7 +9740,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_facebook_page_options
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Timeline"
-msgstr ""
+msgstr "Vremenska crta"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_visitor__timezone
@@ -9875,12 +9887,12 @@ msgstr "Prati"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Track visits using Google Analytics"
-msgstr ""
+msgstr "Pratite posjete pomoću Google Analyticsa"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_pages_view_search
 msgid "Tracked"
-msgstr ""
+msgstr "Prati se"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -10077,7 +10089,7 @@ msgstr "Neobjavljeno"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_search
 msgid "Unregistered"
-msgstr ""
+msgstr "Neregistriran"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.theme_view_kanban
@@ -10120,12 +10132,12 @@ msgstr "URL slike statičke zastavice"
 #: code:addons/website/static/src/components/dialog/edit_menu.xml:0
 #, python-format
 msgid "Url or Email"
-msgstr ""
+msgstr "Url ili Email"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_page_view_search
 msgid "Urls & Pages"
-msgstr ""
+msgstr "URL-ovi i stranice"
 
 #. module: website
 #. odoo-javascript
@@ -10144,11 +10156,13 @@ msgstr ""
 msgid ""
 "Use Plausible.io, Simple and privacy-friendly Google Analytics alternative"
 msgstr ""
+"Koristite Plausible.io, jednostavnu i privatno prihvatljivu alternativu za "
+"Google Analytics"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Use a CDN to optimize the availability of your website's content"
-msgstr ""
+msgstr "Koristite CDN za optimizaciju dostupnosti sadržaja vaše web stranice"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__has_default_share_image
@@ -10355,7 +10369,7 @@ msgstr "Vidljivost"
 #: model:ir.model.fields,field_description:website.field_website_page__visibility_password
 #: model_terms:ir.ui.view,arch_db:website.view_view_form_extend
 msgid "Visibility Password"
-msgstr ""
+msgstr "Vidljivost lozinke"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_ir_ui_view__visibility_password_display
@@ -10686,7 +10700,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Website Info"
-msgstr ""
+msgstr "Podaci o web stranici"
 
 #. module: website
 #. odoo-javascript
@@ -10852,7 +10866,7 @@ msgstr "Web meta naslov"
 #: model:ir.model.fields,field_description:website.field_website_page__website_meta_og_img
 #: model:ir.model.fields,field_description:website.field_website_seo_metadata__website_meta_og_img
 msgid "Website opengraph image"
-msgstr ""
+msgstr "OpenGraph slika web stranice"
 
 #. module: website
 #: model:ir.model,name:website.model_website_rewrite
@@ -11173,7 +11187,7 @@ msgstr ""
 #: code:addons/website/static/src/components/dialog/seo.js:0
 #, python-format
 msgid "Your description looks too short."
-msgstr ""
+msgstr "Tvoj opis je prekratak."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.cookie_policy
@@ -11535,7 +11549,7 @@ msgstr ""
 #: code:addons/website/static/src/client_actions/website_preview/website_preview.xml:0
 #, python-format
 msgid "in the top right corner to start designing."
-msgstr ""
+msgstr "u gornjem desnom kutu za početak dizajniranja."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.template_footer_links

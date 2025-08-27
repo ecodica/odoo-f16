@@ -16,6 +16,7 @@
 # Jasmina Macur <jasmina@hbs.si>, 2024
 # Martin Trigaux, 2024
 # Katja Deržič, 2024
+# Jan Zorko, 2025
 # Aleš Pipan, 2025
 # 
 msgid ""
@@ -1078,7 +1079,7 @@ msgstr ""
 #: code:addons/web/static/src/views/fields/signature/signature_field.xml:0
 #, python-format
 msgid "Binary file"
-msgstr ""
+msgstr "Binarna datoteka"
 
 #. module: web
 #. odoo-javascript
@@ -1150,7 +1151,7 @@ msgstr ""
 #: code:addons/web/static/src/core/commands/command_palette.xml:0
 #, python-format
 msgid "CTRL"
-msgstr ""
+msgstr "CTRL"
 
 #. module: web
 #. odoo-javascript
@@ -1439,7 +1440,7 @@ msgstr "Vsebina:"
 #: code:addons/web/static/src/views/list/list_controller.xml:0
 #, python-format
 msgid "Control panel buttons"
-msgstr ""
+msgstr "Gumbi nadzorne plošče"
 
 #. module: web
 #. odoo-javascript
@@ -3383,7 +3384,7 @@ msgstr "Nov dogodek"
 #: code:addons/web/static/src/views/fields/properties/properties_field.xml:0
 #, python-format
 msgid "New Property"
-msgstr ""
+msgstr "Nova lastnost"
 
 #. module: web
 #. odoo-javascript
@@ -3407,7 +3408,7 @@ msgstr "Nova predloga"
 #: code:addons/web/static/src/views/fields/relational_utils.js:0
 #, python-format
 msgid "New:"
-msgstr ""
+msgstr "Novo:"
 
 #. module: web
 #. odoo-javascript
@@ -4278,7 +4279,7 @@ msgstr "Škrlatna"
 #: code:addons/web/static/src/search/utils/dates.js:0
 #, python-format
 msgid "Q1"
-msgstr ""
+msgstr "Q1"
 
 #. module: web
 #. odoo-javascript
@@ -4286,7 +4287,7 @@ msgstr ""
 #: code:addons/web/static/src/search/utils/dates.js:0
 #, python-format
 msgid "Q2"
-msgstr ""
+msgstr "Q2"
 
 #. module: web
 #. odoo-javascript
@@ -4294,7 +4295,7 @@ msgstr ""
 #: code:addons/web/static/src/search/utils/dates.js:0
 #, python-format
 msgid "Q3"
-msgstr ""
+msgstr "Q3"
 
 #. module: web
 #. odoo-javascript
@@ -4302,7 +4303,7 @@ msgstr ""
 #: code:addons/web/static/src/search/utils/dates.js:0
 #, python-format
 msgid "Q4"
-msgstr ""
+msgstr "Q4"
 
 #. module: web
 #: model:ir.model.fields.selection,name:web.selection__ir_actions_act_window_view__view_mode__qweb
@@ -5136,7 +5137,7 @@ msgstr ""
 #: code:addons/web/static/src/views/form/form_error_dialog/form_error_dialog.xml:0
 #, python-format
 msgid "Stay here"
-msgstr ""
+msgstr "Ostani tukaj"
 
 #. module: web
 #. odoo-javascript
@@ -6651,7 +6652,7 @@ msgstr ""
 #: code:addons/web/static/src/core/domain_selector/domain_selector_branch_operator.xml:0
 #, python-format
 msgid "none"
-msgstr ""
+msgstr "noben"
 
 #. module: web
 #. odoo-javascript

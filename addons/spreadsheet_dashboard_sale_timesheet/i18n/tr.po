@@ -221,21 +221,21 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_timesheet/data/files/timesheet_dashboard.json:0
 #, python-format
 msgid "Top Departments"
-msgstr ""
+msgstr "En İyi Departmanlar"
 
 #. module: spreadsheet_dashboard_sale_timesheet
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_timesheet/data/files/timesheet_dashboard.json:0
 #, python-format
 msgid "Top Employees"
-msgstr ""
+msgstr "En Başarılı Çalışanlar"
 
 #. module: spreadsheet_dashboard_sale_timesheet
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_timesheet/data/files/timesheet_dashboard.json:0
 #, python-format
 msgid "Top Projects"
-msgstr ""
+msgstr "En Başarılı Projeler"
 
 #. module: spreadsheet_dashboard_sale_timesheet
 #. odoo-javascript

@@ -84,28 +84,28 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_expense/data/files/expense_dashboard.json:0
 #, python-format
 msgid "KPI - Expenses"
-msgstr ""
+msgstr "Temel Performans Göstergeleri - Giderler"
 
 #. module: spreadsheet_dashboard_sale_expense
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_expense/data/files/expense_dashboard.json:0
 #, python-format
 msgid "KPI - To reimburse"
-msgstr ""
+msgstr "Temel Performans Göstergeleri - Geri ödenecek"
 
 #. module: spreadsheet_dashboard_sale_expense
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_expense/data/files/expense_dashboard.json:0
 #, python-format
 msgid "KPI - To report"
-msgstr ""
+msgstr "Temel Performans Göstergeleri - Raporlanacak"
 
 #. module: spreadsheet_dashboard_sale_expense
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_expense/data/files/expense_dashboard.json:0
 #, python-format
 msgid "KPI - To validate"
-msgstr ""
+msgstr "Temel Performans Göstergeleri - Onaylanacak"
 
 #. module: spreadsheet_dashboard_sale_expense
 #. odoo-javascript
@@ -134,7 +134,7 @@ msgstr "Ürün"
 #: code:addons/spreadsheet_dashboard_sale_expense/data/files/expense_dashboard.json:0
 #, python-format
 msgid "To reimburse"
-msgstr ""
+msgstr "Geri ödemek için"
 
 #. module: spreadsheet_dashboard_sale_expense
 #. odoo-javascript
@@ -164,7 +164,7 @@ msgstr "En İyi Kategoriler"
 #: code:addons/spreadsheet_dashboard_sale_expense/data/files/expense_dashboard.json:0
 #, python-format
 msgid "Top Employees"
-msgstr ""
+msgstr "En Başarılı Çalışanlar"
 
 #. module: spreadsheet_dashboard_sale_expense
 #. odoo-javascript
@@ -172,14 +172,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_expense/data/files/expense_dashboard.json:0
 #, python-format
 msgid "Top Expenses"
-msgstr ""
+msgstr "En Yüksek Giderler"
 
 #. module: spreadsheet_dashboard_sale_expense
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_expense/data/files/expense_dashboard.json:0
 #, python-format
 msgid "Top Reinvoiced Orders"
-msgstr ""
+msgstr "En Fazla Yeniden Faturalandırılan Siparişler"
 
 #. module: spreadsheet_dashboard_sale_expense
 #. odoo-javascript
