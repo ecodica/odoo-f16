@@ -136,6 +136,14 @@ class TestEdiJson(L10nInTestInvoicingCommon):
             ]
         })
         cls.invoice_with_export.action_post()
+        cls.invoice_global_discount = cls.init_invoice("out_invoice", post=False, products=cls.product_a)
+        cls.invoice_global_discount.write({
+            "invoice_line_ids": [(0, 0, {
+                "name": "Global Discount Line",
+                "price_unit": -100.0,
+            })]
+        })
+        cls.invoice_global_discount.action_post()
         cls._generate_json = cls.env["account.edi.format"]._l10n_in_edi_generate_invoice_json
 
     def test_edi_json(self):
@@ -697,6 +705,163 @@ class TestEdiJson(L10nInTestInvoicingCommon):
                       'TotAmt': 1000.0,
                       'Discount': 0.0,
                       'AssAmt': 1000.0,
+                      'GstRt': 18.0,
+                      'IgstAmt': 180.0,
+                      'CgstAmt': 0.0,
+                      'SgstAmt': 0.0,
+                      'CesRt': 0.0,
+                      'CesAmt': 0.0,
+                      'CesNonAdvlAmt': 0.0,
+                      'StateCesRt': 0.0,
+                      'StateCesAmt': 0.0,
+                      'StateCesNonAdvlAmt': 0.0,
+                      'OthChrg': 0.0,
+                      'TotItemVal': 1000.0
+                    }
+                  ],
+                  'ValDtls': {
+                    'AssVal': 1000.0,
+                    'CgstVal': 0.0,
+                    'SgstVal': 0.0,
+                    'IgstVal': 180.0,
+                    'CesVal': 0.0,
+                    'StCesVal': 0.0,
+                    'Discount': 0.0,
+                    'RndOffAmt': 0.0,
+                    'TotInvVal': 1000.0
+                  },
+                  'ExpDtls': {
+                    'RefClm': 'Y',
+                    'ForCur': 'INR',
+                    'CntCode': 'US'
+                  }
+                }
+            )
+
+        # ==================================== Global Discount Line Test ==============================================
+        with self.subTest(scenario="Global Discount Invoice"):
+            self.assertDictEqual(
+                self._generate_json(self.invoice_global_discount),
+                {
+                    'Version': '1.1',
+                    'TranDtls': {
+                        'TaxSch': 'GST',
+                        'SupTyp': 'B2B',
+                        'RegRev': 'N',
+                        'IgstOnIntra': 'N'
+                    },
+                    'DocDtls': {
+                        'Typ': 'INV',
+                        'No': 'INV/18-19/0012',
+                        'Dt': '01/01/2019'
+                    },
+                    'SellerDtls': {
+                        'Addr1': 'Khodiyar Chowk',
+                        'Loc': 'Amreli',
+                        'Pin': 365220,
+                        'Stcd': '24',
+                        'Addr2': 'Sala Number 3',
+                        'LglNm': 'Default Company',
+                        'GSTIN': '24AAGCC7144L6ZE'
+                    },
+                    'BuyerDtls': {
+                        'Addr1': 'Karansinhji Rd',
+                        'Loc': 'Rajkot',
+                        'Pin': 360001,
+                        'Stcd': '24',
+                        'Addr2': 'Karanpara',
+                        'POS': '24',
+                        'LglNm': 'Partner Intra State',
+                        'GSTIN': '24ABCPM8965E1ZE'
+                    },
+                    'ItemList': [
+                        {
+                        'SlNo': '1',
+                        'PrdDesc': 'product_a',
+                        'IsServc': 'N',
+                        'HsnCd': '111111',
+                        'Qty': 1.0,
+                        'Unit': 'UNT',
+                        'UnitPrice': 1000.0,
+                        'TotAmt': 1000.0,
+                        'Discount': 0.0,
+                        'AssAmt': 1000.0,
+                        'GstRt': 5.0,
+                        'IgstAmt': 0.0,
+                        'CgstAmt': 25.0,
+                        'SgstAmt': 25.0,
+                        'CesRt': 0.0,
+                        'CesAmt': 0.0,
+                        'CesNonAdvlAmt': 0.0,
+                        'StateCesRt': 0.0,
+                        'StateCesAmt': 0.0,
+                        'StateCesNonAdvlAmt': 0.0,
+                        'OthChrg': 0.0,
+                        'TotItemVal': 1050.0
+                        }
+                    ],
+                    'ValDtls': {
+                        'AssVal': 1000.0,
+                        'CgstVal': 25.0,
+                        'SgstVal': 25.0,
+                        'IgstVal': 0.0,
+                        'CesVal': 0.0,
+                        'StCesVal': 0.0,
+                        'Discount': 100.0,
+                        'RndOffAmt': 0.0,
+                        'TotInvVal': 950.0
+                    }
+                },
+                "Indian EDI with global discount did not match"
+            )
+
+        # =================================== Export without LUT Tax test =============================================
+        with self.subTest(scenario="Export Tax Invoice Without LUT and Include Tax"):
+            self.assertEqual(
+                self._generate_json(self.invoice_with_export_without_lut_inc),
+                {
+                  'Version': '1.1',
+                  'TranDtls': {
+                    'TaxSch': 'GST',
+                    'SupTyp': 'EXPWP',
+                    'RegRev': 'N',
+                    'IgstOnIntra': 'N'
+                  },
+                  'DocDtls': {
+                    'Typ': 'INV',
+                    'No': False,
+                    'Dt': '01/01/2019'
+                  },
+                  'SellerDtls': {
+                    'Addr1': 'Khodiyar Chowk',
+                    'Loc': 'Amreli',
+                    'Pin': 365220,
+                    'Stcd': '24',
+                    'Addr2': 'Sala Number 3',
+                    'LglNm': 'Default Company',
+                    'GSTIN': '24AAGCC7144L6ZE'
+                  },
+                  'BuyerDtls': {
+                    'Addr1': '351 Horner Chapel Rd',
+                    'Loc': 'Peebles',
+                    'Pin': 999999,
+                    'Stcd': '96',
+                    'POS': '96',
+                    'LglNm': 'Foreign Partner',
+                    'GSTIN': 'URP'
+                  },
+                  'ItemList': [
+                    {
+                      'SlNo': '1',
+                      'PrdDesc': 'product_a',
+                      'IsServc': 'N',
+                      'HsnCd': '111111',
+                      'Qty': 1.0,
+                      'Unit': 'UNT',
+                      'UnitPrice': 1000.00,
+                      'TotAmt': 1000.00,
+                      'Discount': 0.0,
+                      'AssAmt': 1000.00,
                       'GstRt': 18.0,
                       'IgstAmt': 180.0,
                       'CgstAmt': 0.0,

@@ -60,7 +60,7 @@ export class PosOrder extends Base {
         if (!this.uiState) {
             this.uiState = {
                 lineToRefund: {},
-                displayed: true,
+                displayed: this.state !== "cancel",
                 booked: false,
                 screen_data: {},
                 selected_orderline_uuid: undefined,
@@ -477,12 +477,26 @@ export class PosOrder extends Base {
         );
 
         for (const line of lines_to_recompute) {
-            const newPrice = line.product_id.get_price(
-                pricelist,
-                line.get_quantity(),
-                line.get_price_extra()
-            );
-            line.set_unit_price(newPrice);
+            if (line.isLotTracked()) {
+                const related_lines = [];
+                const price = line.product_id.get_price(
+                    pricelist,
+                    line.get_quantity(),
+                    line.get_price_extra(),
+                    false,
+                    false,
+                    line,
+                    related_lines
+                );
+                related_lines.forEach((line) => line.set_unit_price(price));
+            } else {
+                const newPrice = line.product_id.get_price(
+                    pricelist,
+                    line.get_quantity(),
+                    line.get_price_extra()
+                );
+                line.set_unit_price(newPrice);
+            }
         }
 
         const attributes_prices = {};

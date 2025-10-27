@@ -126,7 +126,7 @@
     <cbc:TaxExclusiveAmount currencyID="TRY">132.00</cbc:TaxExclusiveAmount>
     <cbc:TaxInclusiveAmount currencyID="TRY">158.40</cbc:TaxInclusiveAmount>
     <cbc:AllowanceTotalAmount currencyID="TRY">18.00</cbc:AllowanceTotalAmount>
-    <cbc:PayableAmount currencyID="TRY">158.40</cbc:PayableAmount>
+    <cbc:PayableAmount currencyID="TRY">132.00</cbc:PayableAmount>
   </cac:LegalMonetaryTotal>
   <cac:InvoiceLine>
     <cbc:ID>1</cbc:ID>
@@ -137,11 +137,6 @@
       <cbc:MultiplierFactorNumeric>0.12</cbc:MultiplierFactorNumeric>
       <cbc:Amount currencyID="TRY">18.00</cbc:Amount>
     </cac:AllowanceCharge>
-    <cac:Delivery>
-      <cac:Shipment>
-        <cbc:ID></cbc:ID>
-      </cac:Shipment>
-    </cac:Delivery>
     <cac:TaxTotal>
       <cbc:TaxAmount currencyID="TRY">26.40</cbc:TaxAmount>
       <cac:TaxSubtotal>
