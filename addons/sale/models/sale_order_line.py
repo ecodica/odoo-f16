@@ -73,7 +73,7 @@ class SaleOrderLine(models.Model):
     is_configurable_product = fields.Boolean(
         string="Is the product configurable?",
         related='product_template_id.has_configurable_attributes',
-        depends=['product_id'])
+        depends=['product_template_id'])
     is_downpayment = fields.Boolean(
         string="Is a down payment",
         help="Down payments are made when creating invoices from a sales order."
@@ -1604,7 +1604,7 @@ class SaleOrderLine(models.Model):
         return self.price_unit * (1 - (self.discount or 0.0) / 100.0)
 
     def has_valued_move_ids(self):
-        return self.move_ids
+        return None  # TODO: remove in master
 
     def _get_linked_line(self):
         """ Return the linked line of this line, if any.
