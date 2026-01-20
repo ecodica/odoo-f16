@@ -404,6 +404,10 @@ export class Thread extends Record {
         );
     }
 
+    get canPostMessage() {
+        return this.hasWriteAccess || (this.hasReadAccess && this.canPostOnReadonly);
+    }
+
     get hasAttachmentPanel() {
         return this.model === "discuss.channel";
     }
@@ -436,7 +440,7 @@ export class Thread extends Record {
     }
 
     computeCorrespondent() {
-        if (this.channel_type === "channel") {
+        if (["channel", "group"].includes(this.channel_type)) {
             return undefined;
         }
         const correspondents = this.correspondents;

@@ -355,6 +355,7 @@ class AccountMove(models.Model):
         copy=False,
         store=True,
         compute='_compute_delivery_date',
+        inverse='_inverse_delivery_date',
         precompute=True,
         readonly=False,
     )
@@ -1477,6 +1478,11 @@ class AccountMove(models.Model):
             else:
                 move.invoice_payments_widget = False
 
+    def _get_product_base_line_currency_rate(self, product_line):
+        if self.is_invoice(include_receipts=True):
+            return self.invoice_currency_rate
+        return abs(product_line.amount_currency / product_line.balance) if product_line.balance else 0.0
+
     def _prepare_product_base_line_for_taxes_computation(self, product_line):
         """ Convert an account.move.line having display_type='product' into a base line for the taxes computation.
 
@@ -1486,17 +1492,13 @@ class AccountMove(models.Model):
         self.ensure_one()
         is_invoice = self.is_invoice(include_receipts=True)
         sign = self.direction_sign if is_invoice else 1
-        if is_invoice:
-            rate = self.invoice_currency_rate
-        else:
-            rate = (abs(product_line.amount_currency) / abs(product_line.balance)) if product_line.balance else 0.0
 
         return self.env['account.tax']._prepare_base_line_for_taxes_computation(
             product_line,
             price_unit=product_line.price_unit if is_invoice else product_line.amount_currency,
             quantity=product_line.quantity if is_invoice else 1.0,
             discount=product_line.discount if is_invoice else 0.0,
-            rate=rate,
+            rate=self._get_product_base_line_currency_rate(product_line),
             sign=sign,
             special_mode=False if is_invoice else 'total_excluded',
             name=product_line.name,
@@ -2201,6 +2203,9 @@ class AccountMove(models.Model):
     # -------------------------------------------------------------------------
     # INVERSE METHODS
     # -------------------------------------------------------------------------
+
+    def _inverse_delivery_date(self):
+        pass
 
     def _inverse_tax_totals(self):
         with self._disable_recursion({'records': self}, 'skip_invoice_sync') as disabled:
@@ -3686,7 +3691,7 @@ class AccountMove(models.Model):
                 # "year range monthly"
                 param['anti_regex'] = self._make_regex_non_capturing(self._sequence_yearly_regex.split('(?P<seq>')[0]) + '$'
 
-            if param.get('anti_regex') and not self.journal_id.sequence_override_regex:
+            if param.get('anti_regex') and not self.journal_id.sequence_override_regex and not self.env.context.get('no_anti_regex'):
                 where_string += " AND sequence_prefix !~ %(anti_regex)s "
 
         if self.journal_id.refund_sequence:
@@ -5094,6 +5099,7 @@ class AccountMove(models.Model):
                     validation_msgs.add(_("The Bill/Refund date is required to validate this document."))
 
         for move in self:
+            move.line_ids._check_constrains_account_id_journal_id()
             if move.state in ['posted', 'cancel']:
                 validation_msgs.add(_('The entry %(name)s (id %(id)s) must be in draft.', name=move.name, id=move.id))
             if not move.line_ids.filtered(lambda line: line.display_type not in ('line_section', 'line_note')):
@@ -5122,6 +5128,12 @@ class AccountMove(models.Model):
         if validation_msgs:
             msg = "\n".join([line for line in validation_msgs])
             raise UserError(msg)
+
+        if inactive_analytic_ids := self.line_ids.with_context(active_test=False).distribution_analytic_account_ids.filtered(lambda a: not a.active):
+            raise UserError(_(
+                "You cannot post an entry with an archived analytic account: %s",
+                ', '.join(inactive_analytic_ids.mapped('name')),
+            ))
 
         if soft:
             future_moves = self.filtered(lambda move: move.date > fields.Date.context_today(self))
