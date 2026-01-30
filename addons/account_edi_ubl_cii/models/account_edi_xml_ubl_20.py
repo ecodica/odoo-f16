@@ -67,6 +67,9 @@ class AccountEdiXmlUBL20(models.AbstractModel):
     def _get_partner_party_tax_scheme_vals_list(self, partner, role):
         # Old helper used only for non-BIS3 UBLs, removed in saas-18.4.
         # If you change this method, please change the corresponding new helper as well (at the end of this file).
+        if not partner.vat or partner.vat == '/':
+            return []
+
         # [BR-CO-09] if the PartyTaxScheme/TaxScheme/ID == 'VAT', CompanyID must start with a country code prefix.
         # In some countries however, the CompanyID can be with or without country code prefix and still be perfectly
         # valid (RO, HU, non-EU countries).
@@ -1256,7 +1259,7 @@ class AccountEdiXmlUBL20(models.AbstractModel):
             'cbc:ID': {'_text': invoice.name},
             'cbc:IssueDate': {'_text': invoice.invoice_date},
             'cbc:InvoiceTypeCode': {'_text': 380} if vals['document_type'] == 'invoice' else None,
-            'cbc:Note': {'_text': html2plaintext(invoice.narration)} if invoice.narration else None,
+            'cbc:Note': {'_text': html2plaintext(invoice.narration) if invoice.narration else None},
             'cbc:DocumentCurrencyCode': {'_text': invoice.currency_id.name},
             'cac:OrderReference': {
                 # OrderReference/ID (order_reference) is mandatory inside the OrderReference node
@@ -1562,7 +1565,7 @@ class AccountEdiXmlUBL20(models.AbstractModel):
         """ Generic helper to generate the Party node for a res.partner. """
         partner = vals['partner']
         commercial_partner = partner.commercial_partner_id
-        return {
+        party_node = {
             'cac:PartyIdentification': {
                 'cbc:ID': {'_text': commercial_partner.ref},
             },
@@ -1570,18 +1573,6 @@ class AccountEdiXmlUBL20(models.AbstractModel):
                 'cbc:Name': {'_text': partner.display_name if partner.name else partner.commercial_partner_id.display_name},
             },
             'cac:PostalAddress': self._get_address_node(vals),
-            'cac:PartyTaxScheme': {
-                'cbc:RegistrationName': {'_text': commercial_partner.name},
-                'cbc:CompanyID': {'_text': commercial_partner.vat},
-                'cac:RegistrationAddress': self._get_address_node({**vals, 'partner': commercial_partner}),
-                'cac:TaxScheme': {
-                    'cbc:ID': {
-                        '_text': ('NOT_EU_VAT' if commercial_partner.country_id and
-                                commercial_partner.vat and
-                                not commercial_partner.vat[:2].isalpha() else 'VAT')
-                    }
-                },
-            },
             'cac:PartyLegalEntity': {
                 'cbc:RegistrationName': {'_text': commercial_partner.name},
                 'cbc:CompanyID': {'_text': commercial_partner.vat},
@@ -1594,6 +1585,24 @@ class AccountEdiXmlUBL20(models.AbstractModel):
                 'cbc:ElectronicMail': {'_text': partner.email},
             },
         }
+        if partner.vat and partner.vat != '/':
+            party_node['cac:PartyTaxScheme'] = {
+                'cbc:RegistrationName': {'_text': commercial_partner.name},
+                'cbc:CompanyID': {'_text': commercial_partner.vat},
+                'cac:RegistrationAddress': self._get_address_node({**vals, 'partner': commercial_partner}),
+                'cac:TaxScheme': {
+                    'cbc:ID': {
+                        '_text': (
+                            'NOT_EU_VAT'
+                            if commercial_partner.country_id
+                            and commercial_partner.vat
+                            and not commercial_partner.vat[:2].isalpha()
+                            else 'VAT'
+                        )
+                    }
+                },
+            }
+        return party_node
 
     def _get_financial_account_node(self, vals):
         """ Generic helper to generate the FinancialAccount node for a res.partner.bank """

@@ -493,7 +493,7 @@ class StockMove(models.Model):
         for move in self:
             if float_compare(move.product_uom_qty - old_qties.get(move.id, 0), 0, precision_rounding=move.product_uom.rounding) < 0\
                     and move.procure_method == 'make_to_order'\
-                    and all(m.state == 'done' for m in move.move_orig_ids):
+                    and move.move_orig_ids and all(m.state == 'done' for m in move.move_orig_ids):
                 continue
             if float_compare(move.product_uom_qty, 0, precision_rounding=move.product_uom.rounding) > 0:
                 if move._should_bypass_reservation() \
@@ -503,8 +503,9 @@ class StockMove(models.Model):
 
             if move.procure_method == 'make_to_order' or move.rule_id.procure_method == 'mts_else_mto':
                 procurement_qty = move.product_uom_qty - old_qties.get(move.id, 0)
-                possible_reduceable_qty = -sum(move.move_orig_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_uom_qty).mapped('product_uom_qty'))
-                procurement_qty = max(procurement_qty, possible_reduceable_qty)
+                if move.move_orig_ids:
+                    possible_reduceable_qty = -sum(move.move_orig_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_uom_qty).mapped('product_uom_qty'))
+                    procurement_qty = max(procurement_qty, possible_reduceable_qty)
                 values = move._prepare_procurement_values()
                 origin = move._prepare_procurement_origin()
                 procurements.append(self.env['procurement.group'].Procurement(
@@ -560,11 +561,7 @@ class StockMove(models.Model):
             else:
                 factor = move.product_uom._compute_quantity(move.product_uom_qty, bom.product_uom_id) / bom.product_qty
             _dummy, lines = bom.sudo().explode(move.product_id, factor, picking_type=bom.picking_type_id, never_attribute_values=move.never_product_template_attribute_value_ids)
-            for bom_line, line_data in lines:
-                if float_is_zero(move.product_uom_qty, precision_rounding=move.product_uom.rounding) or self.env.context.get('is_scrap'):
-                    phantom_moves_vals_list += move._generate_move_phantom(bom_line, 0, line_data['qty'])
-                else:
-                    phantom_moves_vals_list += move._generate_move_phantom(bom_line, line_data['qty'], 0)
+            phantom_moves_vals_list += move._generate_all_phantom_moves(lines)
             # delete the move with original product which is not relevant anymore
             moves_ids_to_unlink.add(move.id)
 
@@ -630,6 +627,19 @@ class StockMove(models.Model):
             'picked': self.picked,
             'bom_line_id': bom_line.id,
         }
+
+    def _generate_all_phantom_moves(self, exploded_lines_data):
+        self.ensure_one()
+        phantom_moves_vals_list = []
+        for bom_line, line_data in exploded_lines_data:
+            if float_is_zero(self.product_uom_qty, precision_rounding=self.product_uom.rounding) or self.env.context.get('is_scrap'):
+                vals = self._generate_move_phantom(bom_line, 0, line_data['qty'])
+            else:
+                vals = self._generate_move_phantom(bom_line, line_data['qty'], 0)
+            for val in vals:
+                val['cost_share'] = line_data.get('line_cost_share', 0.0)
+            phantom_moves_vals_list += vals
+        return phantom_moves_vals_list
 
     def _generate_move_phantom(self, bom_line, product_qty, quantity_done):
         vals = []

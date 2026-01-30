@@ -77,12 +77,12 @@ class CustomerPortal(payment_portal.PaymentPortal):
 
         pager_values = portal_pager(
             url=url,
-            total=SaleOrder.search_count(domain),
+            total=SaleOrder.search_count(domain) if SaleOrder.has_access('read') else 0,
             page=page,
             step=self._items_per_page,
             url_args=url_args,
         )
-        orders = SaleOrder.search(domain, order=sort_order, limit=self._items_per_page, offset=pager_values['offset'])
+        orders = SaleOrder.search(domain, order=sort_order, limit=self._items_per_page, offset=pager_values['offset']) if SaleOrder.has_access('read') else SaleOrder
 
         values.update({
             'date': date_begin,
@@ -428,6 +428,9 @@ class PaymentPortal(payment_portal.PaymentPortal):
                 access_token, order_sudo.partner_invoice_id.id, amount, order_sudo.currency_id.id
             ):
                 raise ValidationError(_("The provided parameters are invalid."))
+
+            if order_sudo.is_expired:
+                raise ValidationError(_("The sale order has expired."))
 
             kwargs.update({
                 # To display on the payment form; will be later overwritten when creating the tx.
