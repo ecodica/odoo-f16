@@ -25,7 +25,7 @@ class TestUBLBE(TestUBLCommon):
             'city': "Ramillies",
             'vat': 'BE0202239951',
             'country_id': cls.env.ref('base.be').id,
-            'bank_ids': [(0, 0, {'acc_number': 'BE15001559627230'})],
+            'bank_ids': [(0, 0, {'acc_number': 'BE15001559627230', 'allow_out_payment': True})],
             'ref': 'ref_partner_1',
         })
 
@@ -37,7 +37,7 @@ class TestUBLBE(TestUBLCommon):
             'city': "Ramillies",
             'vat': 'BE0477472701',
             'country_id': cls.env.ref('base.be').id,
-            'bank_ids': [(0, 0, {'acc_number': 'BE90735788866632'})],
+            'bank_ids': [(0, 0, {'acc_number': 'BE90735788866632', 'allow_out_payment': True})],
             'ref': 'ref_partner_2',
         })
 
@@ -93,6 +93,7 @@ class TestUBLBE(TestUBLCommon):
         cls.acc_bank = cls.env['res.partner.bank'].create({
             'acc_number': 'BE15001559627231',
             'partner_id': cls.company_data['company'].partner_id.id,
+            'allow_out_payment': True,
         })
 
         cls.invoice = cls.env['account.move'].create({
@@ -547,6 +548,26 @@ class TestUBLBE(TestUBLCommon):
         )
         self._assert_invoice_attachment(invoice, None, 'from_odoo/bis3_out_invoice_tax_exempt.xml')
 
+    def test_export_gln(self):
+        """ GLN was added in a fixup module account_add_gln. """
+        # TODO master: clean that skiptest, when the module account_add_gln is merged with account
+        if 'global_location_number' not in self.partner_2._fields:
+            self.skipTest("Fixup module with GLN not installed.")
+        self.partner_2.global_location_number = "222222222222"
+        invoice = self._generate_move(
+            self.partner_1,
+            self.partner_2,
+            move_type='out_invoice',
+            invoice_line_ids=[
+                {
+                    'product_id': self.product_a.id,
+                    'price_unit': 990.0,
+                    'tax_ids': [(6, 0, self.tax_0.ids)],
+                },
+            ],
+        )
+        self._assert_invoice_attachment(invoice, None, 'from_odoo/bis3_out_invoice_gln.xml')
+
     ####################################################
     # Test import
     ####################################################
@@ -672,6 +693,9 @@ class TestUBLBE(TestUBLCommon):
         # source: base-negative-inv-correction.xml
         self._assert_imported_invoice_from_file(subfolder=subfolder, filename='bis3_invoice_negative_amounts.xml',
             amount_total=1656.25, amount_tax=331.25, list_line_subtotals=[25, 2800, -1500], move_type='in_refund')
+        # source: base-creditnote-correction.xml with ignored LineExtensionAmount
+        self._assert_imported_invoice_from_file(subfolder=subfolder, filename='bis3_invoice_ignore_lineextensionamount.xml',
+            amount_total=1000, amount_tax=0, list_line_subtotals=[1000])
         # source: vat-category-E.xml
         self._assert_imported_invoice_from_file(subfolder=subfolder, filename='bis3_tax_exempt_gbp.xml',
             amount_total=1200, amount_tax=0, list_line_subtotals=[1200], currency_id=self.env.ref('base.GBP').id)
